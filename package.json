@@ -19,5 +19,13 @@
     "commander": "^2.5.0",
     "confirm-simple": "^1.0.3",
     "github": "^0.2.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/denis-sokolov/remove-github-forks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/denis-sokolov/remove-github-forks/issues"
+  },
+  "homepage": "https://github.com/denis-sokolov/remove-github-forks"
 }
