@@ -1,5 +1,8 @@
 # Clean your useless GitHub forks
 
+[![Code Climate](https://codeclimate.com/github/denis-sokolov/remove-github-forks/badges/gpa.svg)](https://codeclimate.com/github/denis-sokolov/remove-github-forks)
+[![Dependency Status](https://gemnasium.com/denis-sokolov/remove-github-forks.svg)](https://gemnasium.com/denis-sokolov/remove-github-forks)
+
 Developers that contribute to many projects on GitHub, have their profiles full of meaningless temporary forks.
 If a particular pull request has not been closed yet, keeping the fork is useful to modify that fork by pushing to the branch in question.
 Once the pull request has been closed, though, there is hardly any value remaining in having the fork on one's profile.
