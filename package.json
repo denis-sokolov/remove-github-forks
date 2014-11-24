@@ -1,0 +1,22 @@
+{
+  "name": "remove-github-forks",
+  "version": "1.0.0",
+  "description": "Delete all forks that have no commits that are not in the main repository",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "github",
+    "delete",
+    "fork"
+  ],
+  "author": "Denis Sokolov",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^0.9.0",
+    "commander": "^2.5.0",
+    "confirm-simple": "^1.0.3",
+    "github": "^0.2.2"
+  }
+}
