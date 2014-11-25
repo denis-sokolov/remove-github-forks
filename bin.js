@@ -24,8 +24,10 @@ var abort = function(err){
 
 clean.get(token, function(err, repos){
 	if (err) return abort(err);
-	if (!repos.length)
-		return console.log('No useless repositories found.');
+	if (!repos.length) {
+		console.log('No useless repositories found.');
+		process.exit(0);
+	}
 	confirm(
 		'Will delete: ' + repos.map(function(repo){
 			return repo.user+'/'+repo.repo;
@@ -37,6 +39,7 @@ clean.get(token, function(err, repos){
 			clean.remove(token, repos, function(err){
 				if (err) return abort(err);
 				console.log('Done!');
+				process.exit(0);
 			});
 		}
 	);
