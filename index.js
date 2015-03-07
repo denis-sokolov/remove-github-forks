@@ -51,7 +51,8 @@ api.get = function(token, cb){
 			var res = forks.map(function(fork){
 				return {
 					user: fork.owner.login,
-					repo: fork.name
+					repo: fork.name,
+					url : fork.html_url
 				};
 			});
 			cb(null, res);

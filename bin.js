@@ -29,9 +29,9 @@ clean.get(token, function(err, repos){
 		process.exit(0);
 	}
 	confirm(
-		'Will delete: ' + repos.map(function(repo){
-			return repo.user+'/'+repo.repo;
-		}).join(', '),
+		'Delete these forks: \n' + repos.map(function(repo){
+			return '    ' + repo.url;
+		}).join('\n') + '\n',
 		function(confirmed) {
 			if (!confirmed) {
 				return abort('Aborting.');
