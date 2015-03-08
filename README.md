@@ -34,7 +34,7 @@ Advanced usage:
 
 ```javascript
 // Get a list of repositories that are useless
-// repos is a list of {user, repo} objects
+// repos is a list of {user, repo, url} objects
 clean.get(token, function(err, repos){});
 
 // Delete repositories
