@@ -28,7 +28,7 @@ api.get = function(token, cb){
 	async.waterfall([
 		// Get all repositories
 		function(cb){
-			github.repos.getAll({ per_page : 100, type: "public"}, cb);
+			github.repos.getAll({ per_page: 100, type: 'public' }, cb);
 		},
 
 		// Keep only forks
@@ -52,7 +52,7 @@ api.get = function(token, cb){
 				return {
 					user: fork.owner.login,
 					repo: fork.name,
-					url : fork.html_url
+					url: fork.html_url
 				};
 			});
 			cb(null, res);
