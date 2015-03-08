@@ -28,7 +28,7 @@ api.get = function(token, cb){
 	async.waterfall([
 		// Get all repositories
 		function(cb){
-			github.repos.getAll({}, cb);
+			github.repos.getAll({ per_page : 100, type: "public"}, cb);
 		},
 
 		// Keep only forks
