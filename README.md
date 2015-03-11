@@ -21,6 +21,11 @@ $ remove-github-forks token
 Done!
 ```
 
+If you want to do this often and are happy with saving the token in plain-text, add an alias to your `.bashrc`:
+```
+alias clean-github='remove-github-forks YOUR-TOKEN'
+```
+
 ### API
 
 Main usage to delete useless forks:
