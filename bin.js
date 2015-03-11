@@ -13,6 +13,14 @@ program
 	.usage('token')
 	.parse(process.argv);
 
+program.on('--help', function(){
+  console.log('  Please get the OAuth token:');
+  console.log('');
+  console.log('  Head to https://github.com/settings/tokens/new');
+  console.log('  Create a token with permissions public_repo, delete_repo');
+  console.log('  Pass that in the CLI, enjoy!');
+});
+
 if (program.args.length !== 1) program.help();
 
 var token = program.args[0];
