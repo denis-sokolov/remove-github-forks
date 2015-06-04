@@ -1,7 +1,7 @@
 # Clean your useless GitHub forks
 
 [![Code Climate](https://codeclimate.com/github/denis-sokolov/remove-github-forks/badges/gpa.svg)](https://codeclimate.com/github/denis-sokolov/remove-github-forks)
-[![Codacy Badge](https://www.codacy.com/project/badge/8df79309ef6041f699f11a7ae6f36de2)](https://www.codacy.com/app/denis_2849/remove-github-forks)
+[![Codacy Badge](https://www.codacy.com/project/badge/8df79309ef6041f699f11a7ae6f36de2)](https://www.codacy.com/app/denis-sokolov/remove-github-forks)
 [![bitHound Score](https://www.bithound.io/github/denis-sokolov/remove-github-forks/badges/score.svg?)](https://www.bithound.io/github/denis-sokolov/remove-github-forks)
 [![Dependency Status](https://gemnasium.com/denis-sokolov/remove-github-forks.svg)](https://gemnasium.com/denis-sokolov/remove-github-forks)
 
