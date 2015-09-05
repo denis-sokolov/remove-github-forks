@@ -10,6 +10,12 @@ If a particular pull request has not been closed yet, keeping the fork is useful
 Once the pull request has been closed, though, there is hardly any value remaining in having the fork on one's profile.
 This package will delete all forks on one's profile that have no unique commits.
 
+## Install
+
+```sh
+npm install -g remove-github-forks
+```
+
 ## Usage
 
 To allow the library access to a GitHub account, one needs an OAuth token.
