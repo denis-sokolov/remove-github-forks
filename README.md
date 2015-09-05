@@ -15,6 +15,12 @@ This package will delete all forks on one's profile that have no unique commits.
 To allow the library access to a GitHub account, one needs an OAuth token.
 [Create a new token](https://github.com/settings/tokens/new) with permissions `public_repo`, `delete_repo`. (Use `repo` to allow access for private repositories), and pass it to the library.
 
+### Install
+
+```
+$ npm install --global remove-github-forks
+```
+
 ### Command line
 
 ```
