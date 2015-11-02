@@ -30,6 +30,12 @@ $ remove-github-forks token
 Done!
 ```
 
+Warning! Your shell will likely store your command history in a plain-text file such as `.bash_history`. As a quick workaround, consider adding a space in front of your command for it to not be stored:
+
+```
+$ <space>remove-github-forks token
+```
+
 If you want to do this often and are happy with saving the token in plain-text, add an alias to your `.bashrc`:
 ```
 alias clean-github='remove-github-forks YOUR-TOKEN'
