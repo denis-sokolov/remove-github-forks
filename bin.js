@@ -11,6 +11,7 @@ var meta = require('./package.json')
 program
   .version(meta.version)
   .usage('token')
+  .option('--user <value>', 'Only cleanup given user or organization')
   .parse(process.argv)
 
 program.on('--help', function () {
@@ -37,6 +38,13 @@ clean.get(token, function (err, repos) {
     console.log('No useless repositories found.')
     process.exit(0)
   }
+
+  if (program.user) {
+    repos = repos.filter(function (repo) {
+      return repo.user === program.user
+    })
+  }
+
   confirm(
     'Delete these forks: \n' + repos.map(function (repo) {
       return '    ' + repo.url

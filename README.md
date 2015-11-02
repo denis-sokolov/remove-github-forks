@@ -41,6 +41,10 @@ If you want to do this often and are happy with saving the token in plain-text, 
 alias clean-github='remove-github-forks YOUR-TOKEN'
 ```
 
+#### Options
+
+`--user <userOrOrganization>` will only clean repositories for the user or organization provided, without touching repositories for organizations you are in.
+
 ### API
 
 Main usage to delete useless forks:
