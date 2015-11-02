@@ -19,6 +19,7 @@ program.on('--help', function () {
   console.log('  Head to https://github.com/settings/tokens/new')
   console.log('  Create a token with permissions public_repo, delete_repo')
   console.log('  Pass that in the CLI, enjoy!')
+  console.log('')
 })
 
 if (program.args.length !== 1) program.help()
