@@ -16,7 +16,7 @@
   "author": "Denis Sokolov",
   "license": "ISC",
   "dependencies": {
-    "async": "^1.2.0",
+    "async": "^1.5.2",
     "commander": "^2.5.0",
     "confirm-simple": "^1.0.3",
     "github": "^0.2.2"
