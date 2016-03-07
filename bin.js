@@ -34,17 +34,17 @@ var abort = function (err) {
 
 clean.get(token, function (err, repos) {
   if (err) return abort(err)
-  if (!repos.length) {
-    console.log('No useless repositories found.')
-    process.exit(0)
-  }
-
   if (program.user) {
     repos = repos.filter(function (repo) {
       return repo.user === program.user
     })
   }
-
+  
+  if (!repos.length) {
+    console.log('No useless repositories found.')
+    process.exit(0)
+  }
+  
   confirm(
     'Delete these forks: \n' + repos.map(function (repo) {
       return '    ' + repo.url
