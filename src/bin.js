@@ -39,12 +39,12 @@ clean.get(token, function (err, repos) {
       return repo.user === program.user
     })
   }
-  
+
   if (!repos.length) {
     console.log('No useless repositories found.')
     process.exit(0)
   }
-  
+
   confirm(
     'Delete these forks: \n' + repos.map(function (repo) {
       return '    ' + repo.url
