@@ -57,6 +57,8 @@ module.exports = function (github) {
           repo: repo.name,
           per_page: 100
         }, function (err, branches) {
+          if (err) return cb(err)
+
           if (branches.length === 100) {
             // There are too many branches,
             // dealing with pagination is not supported
@@ -64,7 +66,7 @@ module.exports = function (github) {
             return
           }
 
-          cb(err, repo, branches)
+          cb(null, repo, branches)
         })
       },
 
