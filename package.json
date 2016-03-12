@@ -2,10 +2,10 @@
   "name": "remove-github-forks",
   "version": "1.2.0",
   "description": "Delete all forks that have no commits that are not in the main repository",
-  "main": "index.js",
-  "bin": "bin.js",
+  "main": "src/index.js",
+  "bin": "src/bin.js",
   "scripts": {
-    "lint": "eslint bin.js index.js shouldDeleteFork.js",
+    "lint": "eslint src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
