@@ -6,7 +6,7 @@ var program = require('commander')
 var confirm = require('confirm-simple')
 
 var clean = require('./index')
-var meta = require('./package.json')
+var meta = require('../package.json')
 
 program
   .version(meta.version)
