@@ -54,7 +54,7 @@ clean.get(token, function (err, repos) {
         return abort('Aborting.')
       }
       clean.remove(token, repos, function (errDeleting) {
-        if (errDeleting) return abort(err)
+        if (errDeleting) return abort(errDeleting)
         console.log('Done!')
         process.exit(0)
       })
