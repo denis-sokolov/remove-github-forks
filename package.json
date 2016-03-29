@@ -6,7 +6,8 @@
   "bin": "src/bin.js",
   "scripts": {
     "lint": "eslint src",
-    "test": "ava"
+    "test": "ava",
+    "ci": "npm run lint && npm run test"
   },
   "keywords": [
     "github",
