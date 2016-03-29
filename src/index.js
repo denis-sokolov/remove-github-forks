@@ -6,6 +6,11 @@ var GithubLib = require('github')
 var shouldDeleteFork = require('./shouldDeleteFork')
 
 var githubFactory = function (token) {
+  // Allow to inject a GitHub API instead of a token
+  if (token.repos) {
+    return token
+  }
+
   var res = new GithubLib({
     version: '3.0.0'
   })
