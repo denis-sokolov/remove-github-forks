@@ -1,5 +1,7 @@
 # Clean your useless GitHub forks
 
+[![npm](https://img.shields.io/npm/v/remove-github-forks.svg)](https://www.npmjs.com/package/remove-github-forks)
+[![npm](https://img.shields.io/npm/dt/remove-github-forks.svg)](https://www.npmjs.com/package/remove-github-forks)
 [![Build Status](https://travis-ci.org/denis-sokolov/remove-github-forks.svg?branch=master)](https://travis-ci.org/denis-sokolov/remove-github-forks)
 [![Code Climate](https://codeclimate.com/github/denis-sokolov/remove-github-forks/badges/gpa.svg)](https://codeclimate.com/github/denis-sokolov/remove-github-forks)
 [![Codacy Badge](https://www.codacy.com/project/badge/8df79309ef6041f699f11a7ae6f36de2)](https://www.codacy.com/app/denis-sokolov/remove-github-forks)
