@@ -1,3 +1,6 @@
 {
-	"extends": "strict-standard"
+	"extends": "eslint:recommended",
+	"env": {
+		"node": true
+	}
 }
