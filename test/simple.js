@@ -12,7 +12,7 @@ var makeMock = function(responses){
             calls.push([name, callData])
             if (typeof response === 'function')
                 response = response.apply(null, callData)
-            cb(null, response)
+            setTimeout(function(){ cb(null, response) }, 0)
         }
     }
 
