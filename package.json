@@ -20,7 +20,7 @@
     "async": "^1.2.0",
     "commander": "^2.5.0",
     "confirm-simple": "^1.0.3",
-    "github": "^0.2.2"
+    "github": "^2.1.0"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,6 @@
   "homepage": "https://github.com/denis-sokolov/remove-github-forks",
   "devDependencies": {
     "ava": "^0.13.0",
-    "eslint": "^2.4.0"
+    "eslint": "^3.0.1"
   }
 }
