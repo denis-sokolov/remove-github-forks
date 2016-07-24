@@ -50,11 +50,14 @@ api.get = function (token, opts, getCb) {
 
     // Keep only useless forks
     async.filter(forks, function(fork, filterCb){
-      shouldDeleteFork(github, fork, function(result){
+      shouldDeleteFork(github, fork, function(err, result){
+        if (err) return filterCb(err)
         forkDone(fork)
-        filterCb(result)
+        filterCb(null, result)
       })
-    }, function (forksToDelete) {
+    }, function (error, forksToDelete) {
+      if (error) return getCb(error)
+
       // Map to our simple objects
       var res = forksToDelete.map(function (fork) {
         return {

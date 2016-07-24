@@ -28,17 +28,18 @@ var branchIsUseful = function (github, repo, branch, parentBranches, cb) {
         // If diff can't be found, means our commit is not on this
         // parent branch candidate
         if (err.code === 404) {
-          return someCb(false)
+          return someCb(null, false)
         }
-        throw err
+        return someCb(err)
       }
 
       // If parent is not behind us, this parent candidate
       // branch contains our branch
-      someCb(!diff.behind_by)
+      someCb(null, !diff.behind_by)
     })
-  }, function (parentContainsOurCommit) {
-    cb(null, !parentContainsOurCommit)
+  }, function (err, parentContainsOurCommit) {
+    if (err) cb(err)
+    else cb(null, !parentContainsOurCommit)
   })
 }
 
@@ -61,7 +62,7 @@ module.exports = function (github, fork, shouldDeleteCb) {
         if (branches.length === 100) {
           // There are too many branches,
           // dealing with pagination is not supported
-          shouldDeleteCb(false)
+          shouldDeleteCb(null, false)
           return
         }
 
@@ -90,15 +91,13 @@ module.exports = function (github, fork, shouldDeleteCb) {
 
       async.some(branches, function (branch, someCb) {
         branchIsUseful(github, repo, branch, parentbranches, function (err, useful) {
-          if (err) return cb(err)
-          someCb(useful)
+          if (err) return someCb(err)
+          someCb(null, useful)
         })
-      }, function (someBranchesUseful) {
-        cb(null, someBranchesUseful)
-      })
+      }, cb)
     }
   ], function (err, someBranchesUseful) {
-    if (err) throw err
-    shouldDeleteCb(!someBranchesUseful)
+    if (err) shouldDeleteCb(err)
+    else shouldDeleteCb(null, !someBranchesUseful)
   })
 }
