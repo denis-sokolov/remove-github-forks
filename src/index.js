@@ -16,6 +16,7 @@ var api = function (token, opts, cb) {
 
 api.get = function (token, opts, getCb) {
   if (!getCb) { getCb = opts; opts = {} }
+  opts.progress = opts.progress || function(){}
 
   var github = githubFactory(token)
 
@@ -33,9 +34,26 @@ api.get = function (token, opts, getCb) {
       })
     }
 
+    var countDoneForks = 0
+    opts.progress({
+      countInspected: 0,
+      totalToInspect: forks.length,
+    })
+    var forkDone = function(fork){
+      countDoneForks += 1
+      opts.progress({
+        countInspected: countDoneForks,
+        lastInspected: fork.name,
+        totalToInspect: forks.length
+      })
+    }
+
     // Keep only useless forks
     async.filter(forks, function(fork, filterCb){
-      shouldDeleteFork(github, fork, filterCb)
+      shouldDeleteFork(github, fork, function(result){
+        forkDone(fork)
+        filterCb(result)
+      })
     }, function (forksToDelete) {
       // Map to our simple objects
       var res = forksToDelete.map(function (fork) {

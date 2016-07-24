@@ -67,6 +67,13 @@ Advanced usage:
 // Get a list of repositories that are useless
 // repos is a list of {user, repo, url} objects
 clean.get(token, {
+  // Trigger when we can estimate the amount of work done
+  // info has fields:
+  //   countInspected: number of inspected forks
+  //   lastInspected: name of last inspected fork, can be empty at the start
+  //   totalToInspect: total count of forks to inspect
+  progress: function(info){}
+
   // If user is given, only forks belonging to this username
   // (or organization) will be returned.
   user: 'my-username'
