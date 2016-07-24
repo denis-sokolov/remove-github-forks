@@ -37,7 +37,7 @@ api.get = function (token, opts, getCb) {
     var countDoneForks = 0
     opts.progress({
       countInspected: 0,
-      totalToInspect: forks.length,
+      totalToInspect: forks.length
     })
     var forkDone = function(fork){
       countDoneForks += 1
