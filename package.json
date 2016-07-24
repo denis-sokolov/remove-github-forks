@@ -20,7 +20,8 @@
     "async": "^1.2.0",
     "commander": "^2.5.0",
     "confirm-simple": "^1.0.3",
-    "github": "^2.2.0"
+    "github": "^2.2.0",
+    "queue": "^4.0.0"
   },
   "repository": {
     "type": "git",
