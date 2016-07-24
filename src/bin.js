@@ -4,6 +4,7 @@
 
 var program = require('commander')
 var confirm = require('confirm-simple')
+var singleLineLog = require('single-line-log').stdout;
 
 var clean = require('./index')
 var meta = require('../package.json')
@@ -33,6 +34,14 @@ var abort = function (err) {
 }
 
 clean.get(token, {
+  progress: function(info){
+    singleLineLog(
+      'Inspected ' + info.countInspected
+      + '/' + info.totalToInspect
+      + (info.lastInspected ? ' (' + info.lastInspected + ')' : '')
+      + '\n'
+    )
+  },
   user: program.user
 }, function (err, repos) {
   if (err) return abort(err)
