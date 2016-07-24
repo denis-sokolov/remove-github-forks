@@ -54,6 +54,11 @@ Main usage to delete useless forks:
 ```javascript
 var clean = require('remove-github-forks');
 clean(token, function(err){});
+clean(token, {
+  // If user is given, only forks belonging to this username
+  // (or organization) will be deleted.
+  user: 'my-username'
+}, function(err){})
 ```
 
 Advanced usage:
@@ -61,7 +66,11 @@ Advanced usage:
 ```javascript
 // Get a list of repositories that are useless
 // repos is a list of {user, repo, url} objects
-clean.get(token, function(err, repos){});
+clean.get(token, {
+  // If user is given, only forks belonging to this username
+  // (or organization) will be returned.
+  user: 'my-username'
+}, function(err, repos){});
 
 // Delete repositories
 // repos is a list of {user, repo} objects

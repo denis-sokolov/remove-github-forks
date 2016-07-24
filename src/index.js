@@ -6,14 +6,17 @@ var githubFactory = require('./githubFactory')
 var shouldDeleteFork = require('./shouldDeleteFork')
 
 
-var api = function (token, cb) {
-  api.get(token, function (err, repos) {
+var api = function (token, opts, cb) {
+  if (!cb) { cb = opts; opts = {} }
+  api.get(token, opts, function (err, repos) {
     if (err) return cb(err)
     api.remove(token, repos, cb)
   })
 }
 
-api.get = function (token, getCb) {
+api.get = function (token, opts, getCb) {
+  if (!getCb) { getCb = opts; opts = {} }
+
   var github = githubFactory(token)
 
   // Get all repositories
@@ -22,6 +25,13 @@ api.get = function (token, getCb) {
     var forks = repos.filter(function (repo) {
       return repo.fork
     })
+
+    // Keep only forks owned by a specified user
+    if (opts.user) {
+      forks = forks.filter(function(repo){
+        return repo.owner.login === opts.user
+      })
+    }
 
     // Keep only useless forks
     async.filter(forks, shouldDeleteFork(github), function (forksToDelete) {

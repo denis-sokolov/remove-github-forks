@@ -32,13 +32,10 @@ var abort = function (err) {
   process.exit(1)
 }
 
-clean.get(token, function (err, repos) {
+clean.get(token, {
+  user: program.user
+}, function (err, repos) {
   if (err) return abort(err)
-  if (program.user) {
-    repos = repos.filter(function (repo) {
-      return repo.user === program.user
-    })
-  }
 
   if (!repos.length) {
     console.log('No useless repositories found.')
