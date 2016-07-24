@@ -1,3 +1,5 @@
+var Promise = require('promise')
+
 exports.USER = { login: 'current-user' }
 exports.AUTHOR = { login: 'cool-author' }
 exports.COMMIT_A = { sha: 'abcdef1' }
@@ -72,7 +74,12 @@ exports.mock = function(responses){
             var response = typeof responsePassed === 'function'
                 ? responsePassed.call(null, callData)
                 : responsePassed
-            setTimeout(function(){ cb(null, response) }, 0)
+            return new Promise(function(resolve){
+              setTimeout(function(){
+                resolve(response)
+                if (cb) cb(null, response)
+              }, 0)
+            })
         }
     }
 

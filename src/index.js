@@ -30,39 +30,27 @@ var api = function (token, cb) {
 
 api.get = function (token, getCb) {
   var github = githubFactory(token)
-  async.waterfall([
-    // Get all repositories
-    function (cb) {
-      github.repos.getAll({ per_page: 100, type: 'public' }, cb)
-    },
 
+  // Get all repositories
+  github.repos.getAll({ per_page: 100, type: 'public' }).then(function(repos){
     // Keep only forks
-    function (repos, cb) {
-      var forks = repos.filter(function (repo) {
-        return repo.fork
-      })
-      cb(null, forks)
-    },
+    var forks = repos.filter(function (repo) {
+      return repo.fork
+    })
 
     // Keep only useless forks
-    function (forks, cb) {
-      async.filter(forks, shouldDeleteFork(github), function (forksToDelete) {
-        cb(null, forksToDelete)
-      })
-    },
-
-    // Map to our simple objects
-    function (forks, cb) {
-      var res = forks.map(function (fork) {
+    async.filter(forks, shouldDeleteFork(github), function (forksToDelete) {
+      // Map to our simple objects
+      var res = forksToDelete.map(function (fork) {
         return {
           user: fork.owner.login,
           repo: fork.name,
           url: fork.html_url
         }
       })
-      cb(null, res)
-    }
-  ], getCb)
+      getCb(null, res)
+    })
+  }).then(null, function(err){ getCb(err) })
 }
 
 api.remove = function (token, repos, removeCb) {
