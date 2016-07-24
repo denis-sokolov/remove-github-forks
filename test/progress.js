@@ -2,7 +2,7 @@ var test = require('ava')
 var removeGithubForks = require('..')
 var lib = require('./lib')
 
-test.cb('should not delete a fork if user option given', function(t){
+test.cb('should report progress', function(t){
     var mock = lib.mock({
         getBranches: [],
         'delete': true
