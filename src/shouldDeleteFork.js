@@ -42,65 +42,63 @@ var branchIsUseful = function (github, repo, branch, parentBranches, cb) {
   })
 }
 
-module.exports = function (github) {
-  return function (fork, shouldDeleteCb) {
-    async.waterfall([
-      // Grab the repository information
-      function (cb) {
-        github.repos.get({user: fork.owner.login, repo: fork.name}, cb)
-      },
+module.exports = function (github, fork, shouldDeleteCb) {
+  async.waterfall([
+    // Grab the repository information
+    function (cb) {
+      github.repos.get({user: fork.owner.login, repo: fork.name}, cb)
+    },
 
-      // Grab all branches
-      function (repo, cb) {
-        github.repos.getBranches({
-          user: repo.owner.login,
-          repo: repo.name,
-          per_page: 100
-        }, function (err, branches) {
-          if (err) return cb(err)
+    // Grab all branches
+    function (repo, cb) {
+      github.repos.getBranches({
+        user: repo.owner.login,
+        repo: repo.name,
+        per_page: 100
+      }, function (err, branches) {
+        if (err) return cb(err)
 
-          if (branches.length === 100) {
-            // There are too many branches,
-            // dealing with pagination is not supported
-            shouldDeleteCb(false)
-            return
-          }
-
-          cb(null, repo, branches)
-        })
-      },
-
-      // Grap all parent repository branches
-      function (repo, branches, cb) {
-        github.repos.getBranches({
-          user: repo.parent.owner.login,
-          repo: repo.parent.name,
-          per_page: 100
-        }, function (err, parentbranches) {
-          cb(err, repo, branches, parentbranches)
-        })
-      },
-
-      // Compare if for each local branch is useless
-      function (repo, branches, parentbranches, cb) {
-        // Quick common case
-        if (branches.length > parentbranches.length) {
-          cb(null, true)
+        if (branches.length === 100) {
+          // There are too many branches,
+          // dealing with pagination is not supported
+          shouldDeleteCb(false)
           return
         }
 
-        async.some(branches, function (branch, someCb) {
-          branchIsUseful(github, repo, branch, parentbranches, function (err, useful) {
-            if (err) return cb(err)
-            someCb(useful)
-          })
-        }, function (someBranchesUseful) {
-          cb(null, someBranchesUseful)
-        })
+        cb(null, repo, branches)
+      })
+    },
+
+    // Grap all parent repository branches
+    function (repo, branches, cb) {
+      github.repos.getBranches({
+        user: repo.parent.owner.login,
+        repo: repo.parent.name,
+        per_page: 100
+      }, function (err, parentbranches) {
+        cb(err, repo, branches, parentbranches)
+      })
+    },
+
+    // Compare if for each local branch is useless
+    function (repo, branches, parentbranches, cb) {
+      // Quick common case
+      if (branches.length > parentbranches.length) {
+        cb(null, true)
+        return
       }
-    ], function (err, someBranchesUseful) {
-      if (err) throw err
-      shouldDeleteCb(!someBranchesUseful)
-    })
-  }
+
+      async.some(branches, function (branch, someCb) {
+        branchIsUseful(github, repo, branch, parentbranches, function (err, useful) {
+          if (err) return cb(err)
+          someCb(useful)
+        })
+      }, function (someBranchesUseful) {
+        cb(null, someBranchesUseful)
+      })
+    }
+  ], function (err, someBranchesUseful) {
+    if (err) throw err
+    shouldDeleteCb(!someBranchesUseful)
+  })
 }
