@@ -32,7 +32,7 @@ exports.check = function(t, actual, expected){
         if (failed) return
 
         if (expected.length < i + 1)
-            return fail(t, 'Unexpected request found', actualRequest)
+            return fail(t, 'Unexpected request found ' + JSON.stringify(actualRequest))
 
         if (hash(actualRequest) === hash(expected[i]))
             return
@@ -41,15 +41,15 @@ exports.check = function(t, actual, expected){
 
         // Fallback for older Node
         if (!Array.prototype.some)
-            return fail(t, 'Incorrect request', actualRequest)
+            return fail(t, 'Incorrect request ' + JSON.stringify(actualRequest))
 
         var currentRequestIsExpectedButNotNow = expected.slice(i + 1).some(function(attempt){
             return hash(actualRequest) === hash(attempt);
         })
         if (currentRequestIsExpectedButNotNow)
-            return fail(t, 'Missing request', expected[i])
+            return fail(t, 'Missing request ' + JSON.stringify(expected[i]))
 
-        fail(t, 'Unexpected request', actualRequest)
+        fail(t, 'Unexpected request ' + JSON.stringify(actualRequest))
     })
 
     if (expected.length > actual.length)
