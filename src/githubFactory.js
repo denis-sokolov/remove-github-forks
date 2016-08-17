@@ -1,5 +1,4 @@
 var GithubLib = require('github')
-var Promise = require('promise')
 var queue = require('queue')
 
 var rawGithubFactory = function (token) {
