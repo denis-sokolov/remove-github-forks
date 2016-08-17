@@ -1,5 +1,3 @@
-var Promise = require('promise')
-
 exports.USER = { login: 'current-user' }
 exports.AUTHOR = { login: 'cool-author' }
 exports.COMMIT_A = { sha: 'abcdef1' }
