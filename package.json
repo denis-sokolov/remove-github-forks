@@ -17,6 +17,9 @@
   ],
   "author": "Denis Sokolov",
   "license": "ISC",
+  "engines": {
+    "node": ">=4"
+  },
   "dependencies": {
     "async": "^2.0.1",
     "commander": "^2.5.0",
