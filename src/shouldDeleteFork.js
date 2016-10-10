@@ -19,7 +19,7 @@ var branchIsUseful = function (github, repo, branch, parentBranches, cb) {
   })
   async.some(branchesToCheck, function (candidate, someCb) {
     github.repos.compareCommits({
-      user: repo.parent.owner.login,
+      owner: repo.parent.owner.login,
       repo: repo.parent.name,
       base: branch.commit.sha,
       head: candidate.name
@@ -47,13 +47,13 @@ module.exports = function (github, fork, shouldDeleteCb) {
   async.waterfall([
     // Grab the repository information
     function (cb) {
-      github.repos.get({user: fork.owner.login, repo: fork.name}, cb)
+      github.repos.get({owner: fork.owner.login, repo: fork.name}, cb)
     },
 
     // Grab all branches
     function (repo, cb) {
       github.repos.getBranches({
-        user: repo.owner.login,
+        owner: repo.owner.login,
         repo: repo.name,
         per_page: 100
       }, function (err, branches) {
@@ -73,7 +73,7 @@ module.exports = function (github, fork, shouldDeleteCb) {
     // Grap all parent repository branches
     function (repo, branches, cb) {
       github.repos.getBranches({
-        user: repo.parent.owner.login,
+        owner: repo.parent.owner.login,
         repo: repo.parent.name,
         per_page: 100
       }, function (err, parentbranches) {

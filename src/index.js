@@ -61,7 +61,7 @@ api.get = function (token, opts, getCb) {
       // Map to our simple objects
       var res = forksToDelete.map(function (fork) {
         return {
-          user: fork.owner.login,
+          owner: fork.owner.login,
           repo: fork.name,
           url: fork.html_url
         }
