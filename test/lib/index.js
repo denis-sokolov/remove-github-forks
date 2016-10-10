@@ -81,7 +81,19 @@ exports.mock = function(responses){
         }
     }
 
-    var repos = {}
+    var buildRejecter = function(name){
+      return function(){
+        throw new Error('did not expect to have ' + name + ' called');
+      };
+    };
+
+    var repos = {
+      compareCommits: buildRejecter('compareCommits'),
+      delete: buildRejecter('delete'),
+      get: buildRejecter('get'),
+      getAll: buildRejecter('getAll'),
+      getBranches: buildRejecter('getBranches'),
+    };
     Object.keys(responses).forEach(function(name){
         repos[name] = buildResponder(name, responses[name])
     })

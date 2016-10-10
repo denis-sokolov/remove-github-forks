@@ -29,6 +29,8 @@ module.exports = function (token) {
   // to ensure that only one API call runs at a time
   // https://developer.github.com/guides/best-practices-for-integrators/#dealing-with-abuse-rate-limits
   var qd = function(call){
+    if (typeof call !== 'function')
+      throw new Error('call should be a function: ' + call);
     return function(){
       var args = [].slice.apply(arguments)
       return new Promise(function(resolve, reject){
