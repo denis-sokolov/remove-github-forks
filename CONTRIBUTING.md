@@ -24,4 +24,4 @@ Inspected 36/63 (chai)
 
 As your token provides access to your account and thus could be abused if made public.
 
-If you did provide your token, you should [revoke it](https://github.com/settings/tokens) immediatly.
+If you did provide your token, you should [revoke it](https://github.com/settings/tokens) immediately.
