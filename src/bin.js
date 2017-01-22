@@ -42,7 +42,10 @@ clean.get(token, {
       + '\n'
     )
   },
-  user: program.user
+  user: program.user,
+  warnings: function(msg, err){
+   console.error(msg, err); 
+  }
 }, function (err, repos) {
   if (err) return abort(err)
 

@@ -76,7 +76,12 @@ clean.get(token, {
 
   // If user is given, only forks belonging to this username
   // (or organization) will be returned.
-  user: 'my-username'
+  user: 'my-username',
+
+  // If something in the process goes a little bit wrong in a non-destructive
+  // way, we will skip the problematic item and continue. Use this callback
+  // to know about such cases.
+  warnings: function(msg, err){}
 }, function(err, repos){});
 
 // Delete repositories

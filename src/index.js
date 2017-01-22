@@ -17,6 +17,7 @@ var api = function (token, opts, cb) {
 api.get = function (token, opts, getCb) {
   if (!getCb) { getCb = opts; opts = {} }
   opts.progress = opts.progress || function(){}
+  opts.warnings = opts.warnings || function(){}
 
   var github = githubFactory(token)
 
@@ -51,7 +52,10 @@ api.get = function (token, opts, getCb) {
     // Keep only useless forks
     async.filter(forks, function(fork, filterCb){
       shouldDeleteFork(github, fork, function(err, result){
-        if (err) return filterCb(err)
+	if (err) {
+          opts.warnings("Failed to inspect " + fork.name + ", skipping", err);
+          result = false;
+        }
         forkDone(fork)
         filterCb(null, result)
       })
