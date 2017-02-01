@@ -8,10 +8,7 @@
 [![bitHound Score](https://www.bithound.io/github/denis-sokolov/remove-github-forks/badges/score.svg?)](https://www.bithound.io/github/denis-sokolov/remove-github-forks)
 [![Dependency Status](https://gemnasium.com/denis-sokolov/remove-github-forks.svg)](https://gemnasium.com/denis-sokolov/remove-github-forks)
 
-Developers that contribute to many projects on GitHub, have their profiles full of meaningless temporary forks.
-If a particular pull request has not been closed yet, keeping the fork is useful to modify that fork by pushing to the branch in question.
-Once the pull request has been closed, though, there is hardly any value remaining in having the fork on one's profile.
-This package will delete all forks on one's profile that have no unique commits.
+If you contribute to many projects on GitHub, your profile is full of temporary forks that are only useful while the pull request is open. After that there is no reason to keep the fork. This tool will delete all such forks. And if there’s any commits in the fork that have not yet been merged upstream, the fork will be kept, of course. For the extra peace of mind, the tool will ask you to confirm the forks it plans to delete.
 
 ## Usage
 
