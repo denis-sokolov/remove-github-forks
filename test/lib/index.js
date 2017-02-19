@@ -69,9 +69,11 @@ exports.mock = function(responses){
     var buildResponder = function(name, responsePassed){
         return function(callData, cb){
             calls.push([name, callData])
-            var response = typeof responsePassed === 'function'
+            var response = {
+              data: typeof responsePassed === 'function'
                 ? responsePassed.call(null, callData)
                 : responsePassed
+            };
             return new Promise(function(resolve){
               setTimeout(function(){
                 resolve(response)

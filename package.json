@@ -24,7 +24,7 @@
     "async": "^2.0.1",
     "commander": "^2.5.0",
     "confirm-simple": "^1.0.3",
-    "github": "^8.0.0",
+    "github": "^9.0.0",
     "queue": "^4.0.0",
     "single-line-log": "^1.1.1"
   },
