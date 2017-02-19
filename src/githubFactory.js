@@ -55,13 +55,38 @@ module.exports = function (token) {
     }
   }
 
+  var makeResponseTransformer = function(transform){
+    return function(call){
+      if (typeof call !== 'function')
+        throw new Error('call should be a function: ' + call);
+      return function(){
+        var args = [].slice.apply(arguments)
+        var argsCb = args.pop()
+        if (typeof argsCb !== 'function') {
+          args.push(argsCb)
+          argsCb = null
+        }
+        return call.apply(null, args).then(function(result){
+          result = transform(result)
+          if (argsCb) argsCb(null, result)
+          return result
+        })
+      }
+    }
+  }
+
+  // Unwrap .data in the response
+  var nd = makeResponseTransformer(function(response){
+    return response.data;
+  });
+
   return {
     repos: {
-      compareCommits: qd(api.repos.compareCommits),
-      delete: qd(api.repos.delete),
-      get: qd(api.repos.get),
-      getAll: qd(api.repos.getAll),
-      getBranches: qd(api.repos.getBranches)
+      compareCommits: nd(qd(api.repos.compareCommits)),
+      delete: nd(qd(api.repos.delete)),
+      get: nd(qd(api.repos.get)),
+      getAll: nd(qd(api.repos.getAll)),
+      getBranches: nd(qd(api.repos.getBranches))
     }
   }
 }
