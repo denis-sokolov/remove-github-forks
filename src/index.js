@@ -52,7 +52,7 @@ api.get = function (token, opts, getCb) {
     // Keep only useless forks
     async.filter(forks, function(fork, filterCb){
       shouldDeleteFork(github, fork, function(err, result){
-	if (err) {
+        if (err) {
           opts.warnings("Failed to inspect " + fork.name + ", skipping", err);
           result = false;
         }
@@ -72,7 +72,7 @@ api.get = function (token, opts, getCb) {
       })
       getCb(null, res)
     })
-  }).then(null, function(err){ getCb(err) })
+  }, function onRejected(err){ getCb(err) })
 }
 
 api.remove = function (token, repos, removeCb) {
