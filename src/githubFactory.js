@@ -70,6 +70,10 @@ module.exports = function (token) {
           result = transform(result)
           if (argsCb) argsCb(null, result)
           return result
+        }, function onRejected(err){
+          if (argsCb) {
+            argsCb(err);
+          }
         })
       }
     }
