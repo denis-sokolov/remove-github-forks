@@ -71,7 +71,9 @@ module.exports = function (token) {
           if (argsCb) argsCb(null, result)
           return result
         }, function onRejected(err){
-          if (argsCb) argsCb(err)
+          if (argsCb) {
+            argsCb(err);
+          }
         })
       }
     }

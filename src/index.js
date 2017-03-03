@@ -72,7 +72,7 @@ api.get = function (token, opts, getCb) {
       })
       getCb(null, res)
     })
-  }, function onRejected(err){ getCb(err) })
+  }, function onRejected(err){ getCb(err); })
 }
 
 api.remove = function (token, repos, removeCb) {
