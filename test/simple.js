@@ -146,5 +146,32 @@ test.cb('should delete a fork that has branches behind', function(t){
     })
 })
 
+test.cb('should not delete a fork that has diff that is too long to generate', function(t){
+    var mock = lib.mock({
+        getBranches: function(args){
+            if (args.owner === lib.USER.login)
+                return [
+                    { name: 'master', commit: lib.COMMIT_A },
+                ];
+            return [
+                { name: 'master', commit: lib.COMMIT_C },
+            ];
+        },
+        compareCommits: function(){ throw new Error("this diff is taking too long to generate"); },
+        delete: true
+    })
+
+    removeGithubForks(mock.present, function(){
+        lib.check(t, mock.calls(), [
+            [ 'getAll', { per_page: 100, type: 'public' } ],
+            [ 'get', { owner: lib.USER.login, repo: 'fork1' } ],
+            [ 'getBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
+            [ 'getBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
+            [ 'compareCommits', { owner: lib.AUTHOR.login, repo: 'upstream-lib', base: lib.COMMIT_A.sha, head: 'master' } ],
+        ])
+        t.end()
+    })
+})
+
 test.todo('compares branches with master in upstream')
 test.todo('does not delete a fork that has branches ahead')
