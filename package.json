@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/denis-sokolov/remove-github-forks",
   "devDependencies": {
-    "ava": "^0.19.0",
+    "ava": "^0.20.0",
     "eslint": "^4.1.0"
   }
 }
