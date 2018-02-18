@@ -39,7 +39,7 @@ var abort = function (err) {
   process.exit(1)
 }
 
-function delete(confirmed) {
+function deleteRepos(confirmed) {
   if (!confirmed) {
     return abort('Aborting.')
   }
@@ -76,11 +76,9 @@ clean.get(token, {
       'Delete these forks: \n' + repos.map(function (repo) {
         return '    ' + repo.url
       }).join('\n') + '\n',
-      function (confirmed) {
-        delete(confirmed)
-      }
+      deleteRepos
     )
   } else {
-    delete(true)
+    deleteRepos(true)
   }
 })
