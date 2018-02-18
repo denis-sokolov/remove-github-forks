@@ -13,6 +13,7 @@ program
   .version(meta.version)
   .usage('token')
   .option('--user <value>', 'Only cleanup given user or organization')
+  .option('-y', 'Do not ask for confirmation before deleting')
   .parse(process.argv)
 
 program.on('--help', function () {
@@ -24,6 +25,11 @@ program.on('--help', function () {
   console.log('')
 })
 
+var askConfirmation = true
+program.on('-y', function() {
+  askConfirmation = false
+})
+
 if (program.args.length !== 1) program.help()
 
 var token = program.args[0]
@@ -31,6 +37,17 @@ var token = program.args[0]
 var abort = function (err) {
   console.error(err.message || err)
   process.exit(1)
+}
+
+function deleteRepos(confirmed, repos) {
+  if (!confirmed) {
+    return abort('Aborting.')
+  }
+  clean.remove(token, repos, function (errDeleting) {
+    if (errDeleting) return abort(errDeleting)
+    console.log('Done!')
+    process.exit(0)
+  })
 }
 
 clean.get(token, {
@@ -53,20 +70,17 @@ clean.get(token, {
     console.log('No useless repositories found.')
     process.exit(0)
   }
-
-  confirm(
-    'Delete these forks: \n' + repos.map(function (repo) {
-      return '    ' + repo.url
-    }).join('\n') + '\n',
-    function (confirmed) {
-      if (!confirmed) {
-        return abort('Aborting.')
+  
+  if (askConfirmation) {
+    confirm(
+      'Delete these forks: \n' + repos.map(function (repo) {
+        return '    ' + repo.url
+      }).join('\n') + '\n',
+      function (confirmed) {
+        deleteRepos(confirmed, repos)
       }
-      clean.remove(token, repos, function (errDeleting) {
-        if (errDeleting) return abort(errDeleting)
-        console.log('Done!')
-        process.exit(0)
-      })
-    }
-  )
+    )
+  } else {
+    deleteRepos(true, repos)
+  }
 })
