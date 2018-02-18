@@ -13,6 +13,7 @@ program
   .version(meta.version)
   .usage('token')
   .option('--user <value>', 'Only cleanup given user or organization')
+  .option('-y, --yes', 'Do not ask for confirmation')
   .parse(process.argv)
 
 program.on('--help', function () {
@@ -33,6 +34,19 @@ var abort = function (err) {
   process.exit(1)
 }
 
+var assureConfirmation = function(repos, cb){
+  if (program.yes) return cb();
+  confirm(
+    'Delete these forks: \n' + repos.map(function (repo) {
+      return '    ' + repo.url
+  }).join('\n') + '\n', function(confirmed){
+    if (!confirmed) {
+      return abort('Aborting.')
+    }
+    cb();
+  });
+};
+
 clean.get(token, {
   progress: function(info){
     singleLineLog(
@@ -44,7 +58,7 @@ clean.get(token, {
   },
   user: program.user,
   warnings: function(msg, err){
-   console.error(msg, err); 
+   console.error(msg, err);
   }
 }, function (err, repos) {
   if (err) return abort(err)
@@ -54,19 +68,11 @@ clean.get(token, {
     process.exit(0)
   }
 
-  confirm(
-    'Delete these forks: \n' + repos.map(function (repo) {
-      return '    ' + repo.url
-    }).join('\n') + '\n',
-    function (confirmed) {
-      if (!confirmed) {
-        return abort('Aborting.')
-      }
-      clean.remove(token, repos, function (errDeleting) {
-        if (errDeleting) return abort(errDeleting)
-        console.log('Done!')
-        process.exit(0)
-      })
-    }
-  )
+  assureConfirmation(repos, function() {
+    clean.remove(token, repos, function (errDeleting) {
+      if (errDeleting) return abort(errDeleting)
+      console.log('Done!')
+      process.exit(0)
+    })
+  })
 })
