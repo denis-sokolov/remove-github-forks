@@ -76,7 +76,9 @@ clean.get(token, {
       'Delete these forks: \n' + repos.map(function (repo) {
         return '    ' + repo.url
       }).join('\n') + '\n',
-      delete
+      function (confirmed) {
+        delete(confirmed)
+      }
     )
   } else {
     delete(true)
