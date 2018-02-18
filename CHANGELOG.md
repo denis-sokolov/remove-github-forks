@@ -1,3 +1,7 @@
+# 1.5
+
+* Add `--yes` option.
+
 # 1.4
 
 * No longer crash if a single repository has a problem.
