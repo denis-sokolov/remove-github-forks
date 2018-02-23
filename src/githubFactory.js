@@ -8,7 +8,8 @@ var rawGithubFactory = function (token) {
   }
 
   var res = new GithubLib({
-    version: '3.0.0'
+    version: '3.0.0',
+    host: 'api.github.com'
   })
   res.authenticate({
     type: 'oauth',
