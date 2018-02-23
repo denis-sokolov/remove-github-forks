@@ -1,3 +1,7 @@
+# 1.5.1
+
+* Fix “Cookies must be enabled to use GitHub” error. #62
+
 # 1.5
 
 * Add `--yes` option.
