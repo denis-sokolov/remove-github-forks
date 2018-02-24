@@ -78,7 +78,7 @@ api.get = function (token, opts, getCb) {
 api.remove = function (token, repos, removeCb) {
   var github = githubFactory(token)
   async.each(repos, function (repo, cb) {
-    github.repos.delete(repo, cb)
+      github.repos.delete({ owner: repo.owner, repo: repo.repo }, cb)
   }, removeCb)
 }
 
