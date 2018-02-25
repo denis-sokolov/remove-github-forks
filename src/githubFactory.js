@@ -82,13 +82,22 @@ module.exports = function (token) {
     return response.data;
   });
 
+  // Add a warning about subtly invalid params
+  var hw = function(f){
+    return function(){
+      var args = arguments;
+      if (args[0] && args[0].url) throw new Error('Avoid passing url option');
+      return f.apply(null, args);
+    }
+  };
+
   return {
     repos: {
-      compareCommits: nd(qd(api.repos.compareCommits)),
-      delete: nd(qd(api.repos.delete)),
-      get: nd(qd(api.repos.get)),
-      getAll: nd(qd(api.repos.getAll)),
-      getBranches: nd(qd(api.repos.getBranches))
+      compareCommits: hw(nd(qd(api.repos.compareCommits))),
+      delete: hw(nd(qd(api.repos.delete))),
+      get: hw(nd(qd(api.repos.get))),
+      getAll: hw(nd(qd(api.repos.getAll))),
+      getBranches: hw(nd(qd(api.repos.getBranches)))
     }
   }
 }
