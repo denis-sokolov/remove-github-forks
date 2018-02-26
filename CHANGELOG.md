@@ -1,6 +1,6 @@
-# 1.5.1
+# 1.5.2
 
-* Fix “Cookies must be enabled to use GitHub” error. #62
+* Fix “Cookies must be enabled to use GitHub” error. #62, #64. 
 
 # 1.5
 
