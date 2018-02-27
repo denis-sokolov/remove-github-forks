@@ -1,4 +1,4 @@
-var GithubLib = require('github')
+var GithubLib = require('@octokit/rest')
 var queue = require('queue')
 
 var rawGithubFactory = function (token) {
