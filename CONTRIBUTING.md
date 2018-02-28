@@ -1,8 +1,8 @@
 # IMPORTANT
 
-When filing an issue. **DO NOT** paste your token along with the copy paste of the command you executed and the results.
+When filing an issue, **DO NOT** paste your token along with the command you executed (and the results).
 
-E.g. Change:
+For example, you would change:
 
 ```
 $ remove-github-forks a4df6099f47ca53f583baedc358389369f49589a
@@ -22,6 +22,4 @@ Inspected 36/63 (chai)
 {"message":"Server Error: Sorry, this diff is taking too long to generate.","errors":[{"resource":"Comparison","field":"diff","code":"not_available"}],"documentation_url":"https://developer.github.com/v3/repos/commits/#compare-two-commits"}
 ```
 
-As your token provides access to your account and thus could be abused if made public.
-
-If you did provide your token, you should [revoke it](https://github.com/settings/tokens) immediately.
+Your token provides access to your account and thus could be abused if made public. If you did provide your token, you should [revoke it](https://github.com/settings/tokens) immediately. We do not accept responsibility for any damage caused by you piblishing your access token in this repo.
