@@ -3,9 +3,6 @@
 [![npm](https://img.shields.io/npm/v/remove-github-forks.svg)](https://www.npmjs.com/package/remove-github-forks)
 [![npm](https://img.shields.io/npm/dt/remove-github-forks.svg)](https://www.npmjs.com/package/remove-github-forks)
 [![Build Status](https://travis-ci.org/denis-sokolov/remove-github-forks.svg?branch=master)](https://travis-ci.org/denis-sokolov/remove-github-forks)
-[![Code Climate](https://codeclimate.com/github/denis-sokolov/remove-github-forks/badges/gpa.svg)](https://codeclimate.com/github/denis-sokolov/remove-github-forks)
-[![Codacy Badge](https://www.codacy.com/project/badge/8df79309ef6041f699f11a7ae6f36de2)](https://www.codacy.com/app/denis-sokolov/remove-github-forks)
-[![bitHound Score](https://www.bithound.io/github/denis-sokolov/remove-github-forks/badges/score.svg?)](https://www.bithound.io/github/denis-sokolov/remove-github-forks)
 [![Dependency Status](https://gemnasium.com/denis-sokolov/remove-github-forks.svg)](https://gemnasium.com/denis-sokolov/remove-github-forks)
 
 If you contribute to many projects on GitHub, your profile is full of temporary forks that are only useful while the pull request is open. After that there is no reason to keep the fork. This tool will delete all such forks. And if there’s any commits in the fork that have not yet been merged upstream, the fork will be kept, of course. For the extra peace of mind, the tool will ask you to confirm the forks it plans to delete.
