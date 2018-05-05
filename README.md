@@ -83,3 +83,7 @@ clean.get(token, {
 // repos is a list of {user, repo} objects
 clean.remove(token, repos, function(err){});
 ```
+
+### Alternatives:
+
+- https://caub.github.io/github-clean-forks
