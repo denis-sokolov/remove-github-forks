@@ -83,3 +83,8 @@ clean.get(token, {
 // repos is a list of {user, repo} objects
 clean.remove(token, repos, function(err){});
 ```
+
+## Alternatives
+I am not aware of many alternatives to this tool.
+
+One is [github-clean-forks by caub](https://caub.github.io/github-clean-forks).
