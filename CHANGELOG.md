@@ -1,3 +1,7 @@
+# 1.6
+
+* Remove support for Node 4. Breaks BC, but Node 4 is not supported anymore.
+
 # 1.5.2
 
 * Fix “Cookies must be enabled to use GitHub” error. #62, #64. 
