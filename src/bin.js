@@ -13,6 +13,7 @@ program
   .version(meta.version)
   .usage('token')
   .option('--user <value>', 'Only cleanup given user or organization')
+  .option('-p, --page <value>', 'Page of repos to fetch', 1)
   .option('-y, --yes', 'Do not ask for confirmation')
   .parse(process.argv)
 
@@ -57,6 +58,7 @@ clean.get(token, {
     )
   },
   user: program.user,
+  page: program.page,
   warnings: function(msg, err){
    console.error(msg, err);
   }
