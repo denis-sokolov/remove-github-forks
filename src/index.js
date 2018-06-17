@@ -22,7 +22,7 @@ api.get = function (token, opts, getCb) {
   var github = githubFactory(token)
 
   // Get all repositories
-  github.repos.getAll({ per_page: 100, type: 'public' }).then(function(repos){
+  github.repos.getAll({ page: opts.page, per_page: 100, type: 'public' }).then(function(repos){
     // Keep only forks
     var forks = repos.filter(function (repo) {
       return repo.fork
