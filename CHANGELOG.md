@@ -1,3 +1,7 @@
+# 1.7
+
+* Support accounts with over 100 repositories. #1
+
 # 1.6
 
 * Remove support for Node 4. Breaks BC, but Node 4 is not supported anymore.
