@@ -91,12 +91,31 @@ module.exports = function (token) {
     }
   };
 
+  var paginate = function(f){
+    function getAllPages(response){
+      if (!api.hasNextPage(response))
+        return Promise.resolve(response);
+      return api.getNextPage(response)
+        .then(function(nextResponse){
+          return getAllPages(nextResponse)
+        })
+        .then(function(fullResponse){
+          fullResponse.data = response.data.concat(fullResponse.data)
+          return fullResponse;
+        });
+    }
+
+    return function(){
+      return f.apply(null, arguments).then(getAllPages);
+    }
+  };
+
   return {
     repos: {
       compareCommits: hw(nd(qd(api.repos.compareCommits))),
       delete: hw(nd(qd(api.repos.delete))),
       get: hw(nd(qd(api.repos.get))),
-      getAll: hw(nd(qd(api.repos.getAll))),
+      getAll: hw(nd(qd(paginate(api.repos.getAll)))),
       getBranches: hw(nd(qd(api.repos.getBranches)))
     }
   }

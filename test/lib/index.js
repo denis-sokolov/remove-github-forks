@@ -102,6 +102,9 @@ exports.mock = function(responses){
 
     return {
         calls: function(){ return calls },
-        present: { repos: repos }
+        present: {
+          hasNextPage: function(){ return false },
+          repos: repos
+        }
     }
 }
