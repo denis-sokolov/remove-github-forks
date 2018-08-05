@@ -1,0 +1,9 @@
+mergeable:
+  pull_requests:
+    title:
+      must_exclude:
+        regex: 'wip'
+    description:
+      must_exclude:
+        regex: '\[ \]'
+      no-empty: false
