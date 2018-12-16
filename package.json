@@ -25,7 +25,7 @@
     "commander": "^2.5.0",
     "confirm-simple": "^1.0.3",
     "@octokit/rest": "^16.0.1",
-    "queue": "^4.0.0",
+    "queue": "^5.0.0",
     "single-line-log": "^1.1.1"
   },
   "repository": {
