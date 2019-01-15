@@ -6,4 +6,4 @@ mergeable:
     description:
       must_exclude:
         regex: '\[ \]'
-      no-empty: false
+      no_empty: false
