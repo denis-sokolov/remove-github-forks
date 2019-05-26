@@ -21,7 +21,7 @@
     "node": ">=6"
   },
   "dependencies": {
-    "async": "^2.0.1",
+    "async": "^3.0.1",
     "commander": "^2.5.0",
     "confirm-simple": "^1.0.3",
     "@octokit/rest": "^16.0.1",
