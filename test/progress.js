@@ -4,7 +4,7 @@ var lib = require('./lib')
 
 test.cb('should report progress', function(t){
     var mock = lib.mock({
-        getBranches: [],
+        listBranches: [],
         'delete': true
     })
 

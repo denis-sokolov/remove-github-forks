@@ -4,13 +4,13 @@ var lib = require('./lib')
 
 test.cb('should not delete a fork if user option given', function(t){
     var mock = lib.mock({
-        getBranches: [],
+        listBranches: [],
         'delete': true
     })
 
     removeGithubForks(mock.present, { user: 'john-snow' }, function(){
         lib.check(t, mock.calls(), [
-          [ 'getAll', { per_page: 100, type: 'public' } ]
+          [ 'list', { per_page: 100, type: 'public' } ]
         ])
         t.end()
     })

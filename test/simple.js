@@ -4,16 +4,16 @@ var lib = require('./lib')
 
 test.cb('should delete a fork with no branches', function(t){
     var mock = lib.mock({
-        getBranches: [],
+        listBranches: [],
         'delete': true
     })
 
     removeGithubForks(mock.present, function(){
         lib.check(t, mock.calls(), [
-          [ 'getAll', { per_page: 100, type: 'public' } ],
+          [ 'list', { per_page: 100, type: 'public' } ],
           [ 'get', { owner: lib.USER.login, repo: 'fork1' } ],
-          [ 'getBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
-          [ 'getBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
+          [ 'listBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
+          [ 'listBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
           [ 'delete', { owner: lib.USER.login, repo: 'fork1', url: undefined } ]
         ])
         t.end()
@@ -23,14 +23,14 @@ test.cb('should delete a fork with no branches', function(t){
 if (String.prototype.repeat)
     test.cb('should not delete a fork that has over 99 branches', function(t){
         var mock = lib.mock({
-            getBranches: 'a'.repeat(99).split('a').map(function(a, i){ return 'branch' + i; })
+            listBranches: 'a'.repeat(99).split('a').map(function(a, i){ return 'branch' + i; })
         })
 
         removeGithubForks(mock.present, function(){
             lib.check(t, mock.calls(), [
-              [ 'getAll', { per_page: 100, type: 'public' } ],
+              [ 'list', { per_page: 100, type: 'public' } ],
               [ 'get', { owner: lib.USER.login, repo: 'fork1' } ],
-              [ 'getBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ]
+              [ 'listBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ]
             ])
             t.end()
         })
@@ -38,7 +38,7 @@ if (String.prototype.repeat)
 
 test.cb('should not delete a fork that has more branches', function(t){
     var mock = lib.mock({
-        getBranches: function(args){
+        listBranches: function(args){
             if (args.owner === lib.USER.login)
                 return ['foo'];
             return [];
@@ -47,10 +47,10 @@ test.cb('should not delete a fork that has more branches', function(t){
 
     removeGithubForks(mock.present, function(){
         lib.check(t, mock.calls(), [
-          [ 'getAll', { per_page: 100, type: 'public' } ],
+          [ 'list', { per_page: 100, type: 'public' } ],
           [ 'get', { owner: lib.USER.login, repo: 'fork1' } ],
-          [ 'getBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
-          [ 'getBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ]
+          [ 'listBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
+          [ 'listBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ]
         ])
         t.end()
     })
@@ -59,7 +59,7 @@ test.cb('should not delete a fork that has more branches', function(t){
 // Currently our logic does not delete this fork
 test.skip('should delete a fork that has more branches, but all at upstream branch tips', function(t){
     var mock = lib.mock({
-        getBranches: function(args){
+        listBranches: function(args){
             if (args.user === lib.USER.login)
                 return [
                     { name: 'master', commit: lib.COMMIT_A },
@@ -76,10 +76,10 @@ test.skip('should delete a fork that has more branches, but all at upstream bran
 
     removeGithubForks(mock.present, function(){
         lib.check(t, mock.calls(), [
-          [ 'getAll', { per_page: 100, type: 'public' } ],
+          [ 'list', { per_page: 100, type: 'public' } ],
           [ 'get', { owner: lib.USER.login, repo: 'fork1' } ],
-          [ 'getBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
-          [ 'getBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
+          [ 'listBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
+          [ 'listBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
           [ 'delete', { owner: lib.USER.login, repo: 'fork1', url: undefined } ]
         ])
         t.end()
@@ -88,7 +88,7 @@ test.skip('should delete a fork that has more branches, but all at upstream bran
 
 test.cb('should delete a fork that has all branches at upstream branch tips', function(t){
     var mock = lib.mock({
-        getBranches: function(args){
+        listBranches: function(args){
             if (args.user === lib.USER.login)
                 return [
                     { name: 'master', commit: lib.COMMIT_A },
@@ -104,10 +104,10 @@ test.cb('should delete a fork that has all branches at upstream branch tips', fu
 
     removeGithubForks(mock.present, function(){
         lib.check(t, mock.calls(), [
-          [ 'getAll', { per_page: 100, type: 'public' } ],
+          [ 'list', { per_page: 100, type: 'public' } ],
           [ 'get', { owner: lib.USER.login, repo: 'fork1' } ],
-          [ 'getBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
-          [ 'getBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
+          [ 'listBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
+          [ 'listBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
           [ 'delete', { owner: lib.USER.login, repo: 'fork1', url: undefined } ]
         ])
         t.end()
@@ -116,7 +116,7 @@ test.cb('should delete a fork that has all branches at upstream branch tips', fu
 
 test.cb('should delete a fork that has branches behind', function(t){
     var mock = lib.mock({
-        getBranches: function(args){
+        listBranches: function(args){
             if (args.owner === lib.USER.login)
                 return [
                     { name: 'master', commit: lib.COMMIT_A },
@@ -133,10 +133,10 @@ test.cb('should delete a fork that has branches behind', function(t){
 
     removeGithubForks(mock.present, function(){
         lib.check(t, mock.calls(), [
-          [ 'getAll', { per_page: 100, type: 'public' } ],
+          [ 'list', { per_page: 100, type: 'public' } ],
           [ 'get', { owner: lib.USER.login, repo: 'fork1' } ],
-          [ 'getBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
-          [ 'getBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
+          [ 'listBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
+          [ 'listBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
           [ 'compareCommits', { owner: lib.AUTHOR.login, repo: 'upstream-lib', base: lib.COMMIT_B.sha, head: 'master' } ],
           [ 'compareCommits', { owner: lib.AUTHOR.login, repo: 'upstream-lib', base: lib.COMMIT_B.sha, head: 'foo' } ],
           [ 'compareCommits', { owner: lib.AUTHOR.login, repo: 'upstream-lib', base: lib.COMMIT_A.sha, head: 'master' } ],
@@ -148,7 +148,7 @@ test.cb('should delete a fork that has branches behind', function(t){
 
 test.cb('should not delete a fork that has diff that is too long to generate', function(t){
     var mock = lib.mock({
-        getBranches: function(args){
+        listBranches: function(args){
             if (args.owner === lib.USER.login)
                 return [
                     { name: 'master', commit: lib.COMMIT_A },
@@ -163,10 +163,10 @@ test.cb('should not delete a fork that has diff that is too long to generate', f
 
     removeGithubForks(mock.present, function(){
         lib.check(t, mock.calls(), [
-            [ 'getAll', { per_page: 100, type: 'public' } ],
+            [ 'list', { per_page: 100, type: 'public' } ],
             [ 'get', { owner: lib.USER.login, repo: 'fork1' } ],
-            [ 'getBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
-            [ 'getBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
+            [ 'listBranches', { owner: lib.USER.login, repo: 'fork1', per_page: 100 } ],
+            [ 'listBranches', { owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100 } ],
             [ 'compareCommits', { owner: lib.AUTHOR.login, repo: 'upstream-lib', base: lib.COMMIT_A.sha, head: 'master' } ],
         ])
         t.end()

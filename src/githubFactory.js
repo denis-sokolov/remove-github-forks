@@ -7,14 +7,10 @@ var rawGithubFactory = function (token) {
     return token
   }
 
-  var res = new GithubLib({
+  return new GithubLib({
+    auth: token,
     version: '3.0.0'
   })
-  res.authenticate({
-    type: 'oauth',
-    token: token
-  })
-  return res
 }
 
 module.exports = function (token) {
@@ -92,12 +88,12 @@ module.exports = function (token) {
   };
 
   var paginate = function(f){
-    function getAllPages(response){
+    function listPages(response){
       if (!api.hasNextPage(response))
         return Promise.resolve(response);
       return api.getNextPage(response)
         .then(function(nextResponse){
-          return getAllPages(nextResponse)
+          return listPages(nextResponse)
         })
         .then(function(fullResponse){
           fullResponse.data = response.data.concat(fullResponse.data)
@@ -106,7 +102,7 @@ module.exports = function (token) {
     }
 
     return function(){
-      return f.apply(null, arguments).then(getAllPages);
+      return f.apply(null, arguments).then(listPages);
     }
   };
 
@@ -115,8 +111,8 @@ module.exports = function (token) {
       compareCommits: hw(nd(qd(api.repos.compareCommits))),
       delete: hw(nd(qd(api.repos.delete))),
       get: hw(nd(qd(api.repos.get))),
-      getAll: hw(nd(qd(paginate(api.repos.getAll)))),
-      getBranches: hw(nd(qd(api.repos.getBranches)))
+      list: hw(nd(qd(paginate(api.repos.list)))),
+      listBranches: hw(nd(qd(api.repos.listBranches)))
     }
   }
 }

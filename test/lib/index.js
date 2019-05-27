@@ -55,7 +55,7 @@ exports.check = function(t, actual, expected){
 }
 
 exports.mock = function(responses){
-    responses.getAll = responses.getAll || [
+    responses.list = responses.list || [
         {name:'non-fork', fork: false},
         {name:'fork1', fork: true, owner: exports.USER }
     ]
@@ -93,8 +93,8 @@ exports.mock = function(responses){
       compareCommits: buildRejecter('compareCommits'),
       delete: buildRejecter('delete'),
       get: buildRejecter('get'),
-      getAll: buildRejecter('getAll'),
-      getBranches: buildRejecter('getBranches'),
+      list: buildRejecter('list'),
+      listBranches: buildRejecter('listBranches'),
     };
     Object.keys(responses).forEach(function(name){
         repos[name] = buildResponder(name, responses[name])

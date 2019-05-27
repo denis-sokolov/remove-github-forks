@@ -52,7 +52,7 @@ module.exports = function (github, fork, shouldDeleteCb) {
 
     // Grab all branches
     function (repo, cb) {
-      github.repos.getBranches({
+      github.repos.listBranches({
         owner: repo.owner.login,
         repo: repo.name,
         per_page: 100
@@ -72,7 +72,7 @@ module.exports = function (github, fork, shouldDeleteCb) {
 
     // Grap all parent repository branches
     function (repo, branches, cb) {
-      github.repos.getBranches({
+      github.repos.listBranches({
         owner: repo.parent.owner.login,
         repo: repo.parent.name,
         per_page: 100
