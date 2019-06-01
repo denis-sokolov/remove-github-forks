@@ -1,3 +1,7 @@
+# 2.0
+
+* Require Node.js 8
+
 # 1.7
 
 * Support accounts with over 100 repositories. #1
