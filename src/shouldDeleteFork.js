@@ -77,6 +77,10 @@ module.exports = function (github, fork, shouldDeleteCb) {
         repo: repo.parent.name,
         per_page: 100
       }, function (err, parentbranches) {
+        if(err && err.status==404){
+          shouldDeleteCb(null, false)
+          return
+	}
         cb(err, repo, branches, parentbranches)
       })
     },
