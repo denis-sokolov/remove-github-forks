@@ -70,7 +70,7 @@ module.exports = function (github, fork, shouldDeleteCb) {
       })
     },
 
-    // Grap all parent repository branches
+    // Grab all parent repository branches
     function (repo, branches, cb) {
       github.repos.listBranches({
         owner: repo.parent.owner.login,
