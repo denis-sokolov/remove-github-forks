@@ -1,3 +1,7 @@
+# 2.0.1
+
+- Fix error when encountering deleted parent, #71, #72.
+
 # 2.0
 
 - Require Node.js 8
