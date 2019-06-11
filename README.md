@@ -32,6 +32,7 @@ $ <space>remove-github-forks token
 ```
 
 If you want to do this often and are happy with saving the token in plain-text, add an alias to your `.bashrc`:
+
 ```
 alias clean-github='remove-github-forks YOUR-TOKEN'
 ```
@@ -46,13 +47,17 @@ alias clean-github='remove-github-forks YOUR-TOKEN'
 Main usage to delete useless forks:
 
 ```javascript
-var clean = require('remove-github-forks');
-clean(token, function(err){});
-clean(token, {
-  // If user is given, only forks belonging to this username
-  // (or organization) will be deleted.
-  user: 'my-username'
-}, function(err){})
+var clean = require("remove-github-forks");
+clean(token, function(err) {});
+clean(
+  token,
+  {
+    // If user is given, only forks belonging to this username
+    // (or organization) will be deleted.
+    user: "my-username"
+  },
+  function(err) {}
+);
 ```
 
 Advanced usage:
@@ -84,6 +89,7 @@ clean.remove(token, repos, function(err){});
 ```
 
 ## Alternatives
+
 I am not aware of many alternatives to this tool.
 
 One is [github-clean-forks by caub](https://caub.github.io/github-clean-forks).

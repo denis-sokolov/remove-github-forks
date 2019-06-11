@@ -5,9 +5,11 @@
   "main": "src/index.js",
   "bin": "src/bin.js",
   "scripts": {
+    "format": "prettier --write 'src/**/*.{js,md}' *.{js,md}",
+    "format-verify": "prettier --check 'src/**/*.{js,md}' *.{js,md}",
     "lint": "eslint src",
     "test": "ava test/*.js",
-    "ci": "npm run lint && npm run test",
+    "ci": "npm run lint && npm run format-verify && npm run test",
     "prepublishOnly": "npm run ci"
   },
   "keywords": [
@@ -38,6 +40,7 @@
   "homepage": "https://github.com/denis-sokolov/remove-github-forks",
   "devDependencies": {
     "ava": "^2.0.0",
-    "eslint": "^5.0.0"
+    "eslint": "^5.0.0",
+    "prettier": "^1.18.2"
   }
 }
