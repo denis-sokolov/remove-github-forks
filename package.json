@@ -20,7 +20,7 @@
   "author": "Denis Sokolov",
   "license": "ISC",
   "engines": {
-    "node": ">=8.9.4",
+    "node": ">=10",
     "npm": ">=6.10"
   },
   "dependencies": {
