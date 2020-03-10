@@ -1,3 +1,5 @@
+⚠️ Tool unmaintained. GitHub now suggests to delete the fork after deleting a PR branch. Hopefully this software is now less necessary.
+
 # Clean your useless GitHub forks
 
 [![npm](https://img.shields.io/npm/v/remove-github-forks.svg)](https://www.npmjs.com/package/remove-github-forks)
