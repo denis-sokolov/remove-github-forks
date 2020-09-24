@@ -81,7 +81,7 @@ module.exports = function(token) {
 
   // Unwrap .data in the response
   var nd = makeResponseTransformer(function(response) {
-    return response.data || response;
+    return response.data;
   });
 
   // Add a warning about subtly invalid params
@@ -104,7 +104,7 @@ module.exports = function(token) {
       compareCommits: hw(nd(qd(api.repos.compareCommits))),
       delete: hw(nd(qd(api.repos.delete))),
       get: hw(nd(qd(api.repos.get))),
-      list: hw(nd(qd(paginate(api.repos.listForAuthenticatedUser)))),
+      list: hw(qd(paginate(api.repos.listForAuthenticatedUser))),
       listBranches: hw(nd(qd(api.repos.listBranches)))
     }
   };
