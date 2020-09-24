@@ -30,7 +30,7 @@ if (program.args.length !== 1) program.help();
 var token = program.args[0];
 
 var abort = function(err) {
-  console.error(err.message || err);
+  console.trace(err);
   process.exit(1);
 };
 
