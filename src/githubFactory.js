@@ -1,4 +1,4 @@
-var GithubLib = require("@octokit/rest");
+var { Octokit } = require("@octokit/rest");
 var queue = require("queue");
 
 var rawGithubFactory = function(token) {
@@ -7,7 +7,7 @@ var rawGithubFactory = function(token) {
     return token;
   }
 
-  return new GithubLib({
+  return new Octokit({
     auth: token,
     version: "3.0.0"
   });
@@ -81,7 +81,7 @@ module.exports = function(token) {
 
   // Unwrap .data in the response
   var nd = makeResponseTransformer(function(response) {
-    return response.data;
+    return response.data || response;
   });
 
   // Add a warning about subtly invalid params
@@ -94,21 +94,8 @@ module.exports = function(token) {
   };
 
   var paginate = function(f) {
-    function listPages(response) {
-      if (!api.hasNextPage(response)) return Promise.resolve(response);
-      return api
-        .getNextPage(response)
-        .then(function(nextResponse) {
-          return listPages(nextResponse);
-        })
-        .then(function(fullResponse) {
-          fullResponse.data = response.data.concat(fullResponse.data);
-          return fullResponse;
-        });
-    }
-
     return function() {
-      return f.apply(null, arguments).then(listPages);
+      return api.paginate(f, ...arguments);
     };
   };
 
@@ -117,7 +104,7 @@ module.exports = function(token) {
       compareCommits: hw(nd(qd(api.repos.compareCommits))),
       delete: hw(nd(qd(api.repos.delete))),
       get: hw(nd(qd(api.repos.get))),
-      list: hw(nd(qd(paginate(api.repos.list)))),
+      list: hw(nd(qd(paginate(api.repos.listForAuthenticatedUser)))),
       listBranches: hw(nd(qd(api.repos.listBranches)))
     }
   };

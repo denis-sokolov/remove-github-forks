@@ -55,7 +55,7 @@ exports.check = function(t, actual, expected){
 }
 
 exports.mock = function(responses){
-    responses.list = responses.list || [
+    responses.listForAuthenticatedUser = responses.listForAuthenticatedUser || [
         {name:'non-fork', fork: false},
         {name:'fork1', fork: true, owner: exports.USER }
     ]
@@ -69,11 +69,11 @@ exports.mock = function(responses){
     var buildResponder = function(name, responsePassed){
         return function(callData, cb){
             calls.push([name, callData])
-            var response = {
-              data: typeof responsePassed === 'function'
+            var methodsWithoutDataField = ['listForAuthenticatedUser'];
+            var data = typeof responsePassed === 'function'
                 ? responsePassed.call(null, callData)
-                : responsePassed
-            };
+                : responsePassed;
+            var response = methodsWithoutDataField.indexOf(name) > -1 ? data : { data: data };
             return new Promise(function(resolve){
               setTimeout(function(){
                 resolve(response)
@@ -93,7 +93,7 @@ exports.mock = function(responses){
       compareCommits: buildRejecter('compareCommits'),
       delete: buildRejecter('delete'),
       get: buildRejecter('get'),
-      list: buildRejecter('list'),
+      listForAuthenticatedUser: buildRejecter('listForAuthenticatedUser'),
       listBranches: buildRejecter('listBranches'),
     };
     Object.keys(responses).forEach(function(name){
@@ -103,7 +103,7 @@ exports.mock = function(responses){
     return {
         calls: function(){ return calls },
         present: {
-          hasNextPage: function(){ return false },
+          paginate: function(f, ...args){ return f(...args) },
           repos: repos
         }
     }
