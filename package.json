@@ -24,11 +24,11 @@
   },
   "dependencies": {
     "@octokit/rest": "^18.0.6",
-    "async": "^3.0.1",
-    "commander": "^4.0.0",
+    "async": "^3.2.0",
+    "commander": "^6.1.0",
     "confirm-simple": "^1.0.3",
-    "queue": "^6.0.0",
-    "single-line-log": "^1.1.1"
+    "queue": "^6.0.1",
+    "single-line-log": "^1.1.2"
   },
   "repository": {
     "type": "git",
@@ -39,9 +39,9 @@
   },
   "homepage": "https://github.com/denis-sokolov/remove-github-forks",
   "devDependencies": {
-    "ava": "^3.0.0",
-    "eslint": "^6.8.0",
-    "prettier": "^1.18.2"
+    "ava": "^3.12.1",
+    "eslint": "^7.9.0",
+    "prettier": "^1.19.1"
   },
   "ava": {
     "files": [
