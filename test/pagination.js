@@ -1,3 +1,3 @@
-var test = require('ava')
+const test = require('ava');
 
-test.todo('paginates repos')
+test.todo('paginates repos');

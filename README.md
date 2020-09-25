@@ -51,15 +51,15 @@ Main usage to delete useless forks:
 
 ```javascript
 var clean = require("remove-github-forks");
-clean(token, function(err) {});
+clean(token, function (err) {});
 clean(
   token,
   {
     // If user is given, only forks belonging to this username
     // (or organization) will be deleted.
-    user: "my-username"
+    user: "my-username",
   },
-  function(err) {}
+  function (err) {}
 );
 ```
 
