@@ -42,5 +42,11 @@
     "ava": "^3.0.0",
     "eslint": "^6.8.0",
     "prettier": "^1.18.2"
+  },
+  "ava": {
+    "files": [
+      "test/**/*",
+      "!test/lib"
+    ]
   }
 }
