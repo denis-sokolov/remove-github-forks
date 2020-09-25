@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format-verify
+
+  Test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node:
+          - 10
+          - 12
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm run build
+      - run: npx ava
