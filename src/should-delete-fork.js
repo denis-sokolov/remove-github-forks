@@ -1,15 +1,13 @@
 'use strict';
 
-const async = require('async');
-
-const branchIsUseful = (github, repo, branch, parentBranches, callback) => {
+const branchIsUseful = async (github, repo, branch, parentBranches) => {
 	const someParentBranchAtThisSha =
 		parentBranches.filter((candidate) => {
 			return branch.commit.sha === candidate.commit.sha;
 		}).length === 1;
 
 	if (someParentBranchAtThisSha) {
-		return callback(null, false);
+		return false;
 	}
 
 	// Check if at least one parent branch contains this commit
@@ -18,37 +16,32 @@ const branchIsUseful = (github, repo, branch, parentBranches, callback) => {
 	const branchesToCheck = parentBranches.filter((b) => {
 		return [branch.name, 'master'].includes(b.name);
 	});
-	async.some(
-		branchesToCheck,
-		async (candidate) => {
-			try {
-				const {data: diff} = await github.repos.compareCommits({
-					owner: repo.parent.owner.login,
-					repo: repo.parent.name,
-					base: branch.commit.sha,
-					head: candidate.name
-				});
-				// If parent is not behind us, this parent candidate
-				// branch contains our branch
-				return !diff.behind_by;
-			} catch (error) {
-				// If diff can't be found, means our commit is not on this
-				// parent branch candidate
-				if (error.status === 404) {
-					return false;
-				}
+	for (const candidate of branchesToCheck) {
+		try {
+			// eslint-disable-next-line no-await-in-loop
+			const {data: diff} = await github.repos.compareCommits({
+				owner: repo.parent.owner.login,
+				repo: repo.parent.name,
+				base: branch.commit.sha,
+				head: candidate.name
+			});
+			// If parent is not behind us, this parent candidate
+			// branch contains our branch
+			if (diff.behind_by) {
+				return true;
+			}
+		} catch (error) {
+			// If diff can't be found, means our commit is not on this
+			// parent branch candidate
+			if (error.status === 404) {
+				continue;
+			}
 
-				throw error;
-			}
-		},
-		(error, parentContainsOurCommit) => {
-			if (error) {
-				callback(error);
-			} else {
-				callback(null, !parentContainsOurCommit);
-			}
+			throw error;
 		}
-	);
+	}
+
+	return false;
 };
 
 module.exports = async (github, fork, shouldDeleteCallback) => {
@@ -98,26 +91,16 @@ module.exports = async (github, fork, shouldDeleteCallback) => {
 			return;
 		}
 
-		async.some(
-			branches,
-			(branch, someCallback) => {
-				branchIsUseful(
-					github,
-					repo,
-					branch,
-					parentbranches,
-					(error, useful) => {
-						if (error) {
-							return someCallback(error);
-						}
+		for (const branch of branches) {
+			// eslint-disable-next-line no-await-in-loop
+			const useful = await branchIsUseful(github, repo, branch, parentbranches);
+			if (useful) {
+				shouldDeleteCallback(null, false);
+				return;
+			}
+		}
 
-						someCallback(null, useful);
-					}
-				);
-			},
-			(error, someBranchesUseful) =>
-				shouldDeleteCallback(error, !someBranchesUseful)
-		);
+		shouldDeleteCallback(null, true);
 	} catch (error) {
 		shouldDeleteCallback(error);
 	}
