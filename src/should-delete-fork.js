@@ -44,64 +44,56 @@ const branchIsUseful = async (github, repo, branch, parentBranches) => {
 	return false;
 };
 
-module.exports = async (github, fork, shouldDeleteCallback) => {
-	try {
-		// Grab the repository information
-		const {data: repo} = await github.repos.get({
-			owner: fork.owner.login,
-			repo: fork.name
-		});
+module.exports = async (github, fork) => {
+	// Grab the repository information
+	const {data: repo} = await github.repos.get({
+		owner: fork.owner.login,
+		repo: fork.name
+	});
 
-		// Grab all branches
-		const {data: branches} = await github.repos.listBranches({
-			owner: repo.owner.login,
-			repo: repo.name,
-			per_page: 100
-		});
+	// Grab all branches
+	const {data: branches} = await github.repos.listBranches({
+		owner: repo.owner.login,
+		repo: repo.name,
+		per_page: 100
+	});
 
-		if (branches.length === 100) {
-			// There are too many branches,
-			// dealing with pagination is not supported
-			shouldDeleteCallback(null, false);
-			return;
-		}
-
-		// Grab all parent repository branches
-		let parentbranches;
-		try {
-			({data: parentbranches} = await github.repos.listBranches({
-				owner: repo.parent.owner.login,
-				repo: repo.parent.name,
-				per_page: 100
-			}));
-		} catch (error) {
-			// If parent repository was deleted, need to preserve the fork
-			if (error && error.status === 404) {
-				shouldDeleteCallback(null, false);
-				return;
-			}
-
-			throw error;
-		}
-
-		// Compare if for each local branch is useless
-		if (branches.length > parentbranches.length) {
-			// Quick common case
-			shouldDeleteCallback(null, false);
-			return;
-		}
-
-		for (const branch of branches) {
-			// eslint-disable-next-line no-await-in-loop
-			const useful = await branchIsUseful(github, repo, branch, parentbranches);
-			if (useful) {
-				shouldDeleteCallback(null, false);
-				return;
-			}
-		}
-
-		shouldDeleteCallback(null, true);
-	} catch (error) {
-		shouldDeleteCallback(error);
+	if (branches.length === 100) {
+		// There are too many branches,
+		// dealing with pagination is not supported
+		return false;
 	}
+
+	// Grab all parent repository branches
+	let parentbranches;
+	try {
+		({data: parentbranches} = await github.repos.listBranches({
+			owner: repo.parent.owner.login,
+			repo: repo.parent.name,
+			per_page: 100
+		}));
+	} catch (error) {
+		// If parent repository was deleted, need to preserve the fork
+		if (error && error.status === 404) {
+			return false;
+		}
+
+		throw error;
+	}
+
+	// Compare if for each local branch is useless
+	if (branches.length > parentbranches.length) {
+		// Quick common case
+		return false;
+	}
+
+	for (const branch of branches) {
+		// eslint-disable-next-line no-await-in-loop
+		const useful = await branchIsUseful(github, repo, branch, parentbranches);
+		if (useful) {
+			return false;
+		}
+	}
+
+	return true;
 };

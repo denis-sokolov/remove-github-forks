@@ -1,7 +1,5 @@
 'use strict';
 
-const async = require('async');
-
 const githubFactory = require('./github-factory');
 const shouldDeleteFork = require('./should-delete-fork');
 
@@ -59,33 +57,25 @@ api.get = async (token, options, getCallback) => {
 		};
 
 		// Keep only useless forks
-		async.filter(
-			forks,
-			(fork, filterCallback) => {
-				shouldDeleteFork(github, fork, (error, result) => {
-					if (error) {
-						options.warnings(`Failed to inspect ${fork.name}, skipping`, error);
-						result = false;
-					}
-
-					forkDone(fork);
-					filterCallback(null, result);
-				});
-			},
-			(error, forksToDelete) => {
-				if (error) {
-					return getCallback(error);
+		const processedForks = forks.map(async (fork) => {
+			try {
+				if (await shouldDeleteFork(github, fork)) {
+					// Map to our simple objects
+					return {
+						owner: fork.owner.login,
+						repo: fork.name,
+						url: fork.html_url
+					};
 				}
-
-				// Map to our simple objects
-				const response = forksToDelete.map((fork) => ({
-					owner: fork.owner.login,
-					repo: fork.name,
-					url: fork.html_url
-				}));
-				getCallback(null, response);
+			} catch (error) {
+				options.warnings(`Failed to inspect ${fork.name}, skipping`, error);
+			} finally {
+				forkDone(fork);
 			}
-		);
+		});
+
+		const forksToDelete = await Promise.all(processedForks);
+		getCallback(null, forksToDelete.filter(Boolean));
 	} catch (error) {
 		getCallback(error);
 	}

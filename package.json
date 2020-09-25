@@ -24,7 +24,6 @@
   "dependencies": {
     "@octokit/plugin-throttling": "^3.3.0",
     "@octokit/rest": "^18.0.6",
-    "async": "^3.2.0",
     "commander": "^6.1.0",
     "confirm-simple": "^1.0.3",
     "single-line-log": "^1.1.2"
