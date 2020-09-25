@@ -1,117 +1,34 @@
 const {Octokit} = require('@octokit/rest');
-const queue = require('queue');
+const {throttling} = require('@octokit/plugin-throttling');
+const ThrottledOctokit = Octokit.plugin(throttling);
 
-const rawGithubFactory = (token) => {
+module.exports = (token) => {
 	// Allow to inject a GitHub API instead of a token
 	if (token.repos) {
 		return token;
 	}
 
-	return new Octokit({
+	return new ThrottledOctokit({
 		auth: token,
-		version: '3.0.0'
-	});
-};
+		version: '3.0.0',
+		throttle: {
+			onRateLimit: (retryAfter, options, octokit) => {
+				octokit.log.warn(
+					`Request quota exhausted for request ${options.method} ${options.url}`
+				);
 
-module.exports = (token) => {
-	const api = rawGithubFactory(token);
-
-	const q = queue({
-		concurrency: 1,
-		timeout: 2000
-	});
-
-	// Transform a github function call into a queued function call
-	// to ensure that only one API call runs at a time
-	// https://developer.github.com/guides/best-practices-for-integrators/#dealing-with-abuse-rate-limits
-	const qd = (call) => {
-		if (typeof call !== 'function') {
-			throw new TypeError(`call should be a function: ${call}`);
-		}
-
-		return (...arguments_) =>
-			new Promise((resolve, reject) => {
-				q.push((callback) => {
-					let argumentsCallback = arguments_.pop();
-					if (typeof argumentsCallback !== 'function') {
-						arguments_.push(argumentsCallback);
-						argumentsCallback = null;
-					}
-
-					call.apply(null, arguments_).then(
-						(result) => {
-							callback();
-							if (argumentsCallback) {
-								argumentsCallback(null, result);
-							}
-
-							resolve(result);
-						},
-						(error) => {
-							callback();
-							if (argumentsCallback) {
-								argumentsCallback(error);
-							}
-
-							reject(error);
-						}
-					);
-				});
-				q.start();
-			});
-	};
-
-	const makeResponseTransformer = (transform) => (call) => {
-		if (typeof call !== 'function') {
-			throw new TypeError(`call should be a function: ${call}`);
-		}
-
-		return (...arguments_) => {
-			let argumentsCallback = arguments_.pop();
-			if (typeof argumentsCallback !== 'function') {
-				arguments_.push(argumentsCallback);
-				argumentsCallback = null;
-			}
-
-			return call.apply(null, arguments_).then(
-				(result) => {
-					result = transform(result);
-					if (argumentsCallback) {
-						argumentsCallback(null, result);
-					}
-
-					return result;
-				},
-				(error) => {
-					if (argumentsCallback) {
-						argumentsCallback(error);
-					}
+				if (options.request.retryCount === 0) {
+					// Only retries once
+					octokit.log.info(`Retrying after ${retryAfter} seconds!`);
+					return true;
 				}
-			);
-		};
-	};
-
-	// Unwrap .data in the response
-	const nd = makeResponseTransformer(({data}) => data);
-
-	// Add a warning about subtly invalid params
-	const hw = (f) => (...arguments_) => {
-		if (arguments_[0] && arguments_[0].url) {
-			throw new Error('Avoid passing url option');
+			},
+			onAbuseLimit: (retryAfter, options, octokit) => {
+				// Does not retry, only logs a warning
+				octokit.log.warn(
+					`Abuse detected for request ${options.method} ${options.url}`
+				);
+			}
 		}
-
-		return f.apply(null, arguments_);
-	};
-
-	const paginate = (f) => (...arguments_) => api.paginate(f, ...arguments_);
-
-	return {
-		repos: {
-			compareCommits: hw(nd(qd(api.repos.compareCommits))),
-			delete: hw(nd(qd(api.repos.delete))),
-			get: hw(nd(qd(api.repos.get))),
-			list: hw(qd(paginate(api.repos.listForAuthenticatedUser))),
-			listBranches: hw(nd(qd(api.repos.listBranches)))
-		}
-	};
+	});
 };
