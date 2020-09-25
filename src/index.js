@@ -1,106 +1,108 @@
-"use strict";
+'use strict';
 
-var async = require("async");
+const async = require('async');
 
-var githubFactory = require("./githubFactory");
-var shouldDeleteFork = require("./shouldDeleteFork");
+const githubFactory = require('./github-factory');
+const shouldDeleteFork = require('./should-delete-fork');
 
-var api = function(token, opts, cb) {
-  if (!cb) {
-    cb = opts;
-    opts = {};
-  }
-  api.get(token, opts, function(err, repos) {
-    if (err) return cb(err);
-    api.remove(token, repos, cb);
-  });
+const api = (token, options, callback) => {
+	if (!callback) {
+		callback = options;
+		options = {};
+	}
+
+	api.get(token, options, (error, repos) => {
+		if (error) {
+			return callback(error);
+		}
+
+		api.remove(token, repos, callback);
+	});
 };
 
-api.get = function(token, opts, getCb) {
-  if (!getCb) {
-    getCb = opts;
-    opts = {};
-  }
-  opts.progress = opts.progress || function() {};
-  opts.warnings = opts.warnings || function() {};
+api.get = (token, options, getCallback) => {
+	if (!getCallback) {
+		getCallback = options;
+		options = {};
+	}
 
-  var github = githubFactory(token);
+	options.progress = options.progress || (() => {});
+	options.warnings = options.warnings || (() => {});
 
-  // Get all repositories
-  github.repos
-    .list({ type: "public" })
-    .then(function(repos) {
-      // Keep only forks
-      var forks = repos.filter(function(repo) {
-        return repo.fork;
-      });
+	const github = githubFactory(token);
 
-      // Keep only forks owned by a specified user
-      if (opts.user) {
-        forks = forks.filter(function(repo) {
-          return repo.owner.login === opts.user;
-        });
-      }
+	// Get all repositories
+	github.repos
+		.list({type: 'public'})
+		.then((repos) => {
+			// Keep only forks
+			let forks = repos.filter(({fork}) => fork);
 
-      var countDoneForks = 0;
-      opts.progress({
-        countInspected: 0,
-        totalToInspect: forks.length
-      });
-      var forkDone = function(fork) {
-        countDoneForks += 1;
-        opts.progress({
-          countInspected: countDoneForks,
-          lastInspected: fork.name,
-          totalToInspect: forks.length
-        });
-      };
+			// Keep only forks owned by a specified user
+			if (options.user) {
+				forks = forks.filter(({owner}) => owner.login === options.user);
+			}
 
-      // Keep only useless forks
-      async.filter(
-        forks,
-        function(fork, filterCb) {
-          shouldDeleteFork(github, fork, function(err, result) {
-            if (err) {
-              opts.warnings(
-                "Failed to inspect " + fork.name + ", skipping",
-                err
-              );
-              result = false;
-            }
-            forkDone(fork);
-            filterCb(null, result);
-          });
-        },
-        function(error, forksToDelete) {
-          if (error) return getCb(error);
+			let countDoneForks = 0;
+			options.progress({
+				countInspected: 0,
+				totalToInspect: forks.length
+			});
+			const forkDone = (fork) => {
+				countDoneForks += 1;
+				options.progress({
+					countInspected: countDoneForks,
+					lastInspected: fork.name,
+					totalToInspect: forks.length
+				});
+			};
 
-          // Map to our simple objects
-          var res = forksToDelete.map(function(fork) {
-            return {
-              owner: fork.owner.login,
-              repo: fork.name,
-              url: fork.html_url
-            };
-          });
-          getCb(null, res);
-        }
-      );
-    })
-    .then(null, function(err) {
-      getCb(err);
-    });
+			// Keep only useless forks
+			async.filter(
+				forks,
+				(fork, filterCallback) => {
+					shouldDeleteFork(github, fork, (error, result) => {
+						if (error) {
+							options.warnings(
+								`Failed to inspect ${fork.name}, skipping`,
+								error
+							);
+							result = false;
+						}
+
+						forkDone(fork);
+						filterCallback(null, result);
+					});
+				},
+				(error, forksToDelete) => {
+					if (error) {
+						return getCallback(error);
+					}
+
+					// Map to our simple objects
+					const response = forksToDelete.map((fork) => ({
+						owner: fork.owner.login,
+						repo: fork.name,
+						url: fork.html_url
+					}));
+					getCallback(null, response);
+				}
+			);
+		})
+		.then(null, (error) => {
+			getCallback(error);
+		});
 };
 
-api.remove = function(token, repos, removeCb) {
-  var github = githubFactory(token);
-  async.each(
-    repos,
-    function(repo, cb) {
-      github.repos.delete({ owner: repo.owner, repo: repo.repo }, cb);
-    },
-    removeCb
-  );
+api.remove = (token, repos, removeCallback) => {
+	const github = githubFactory(token);
+	async.each(
+		repos,
+		(repo, callback) => {
+			github.repos.delete({owner: repo.owner, repo: repo.repo}, callback);
+		},
+		removeCallback
+	);
 };
 
 module.exports = api;

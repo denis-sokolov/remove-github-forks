@@ -5,11 +5,10 @@
   "main": "src/index.js",
   "bin": "src/bin.js",
   "scripts": {
-    "format": "prettier --write 'src/**/*.{js,md}' *.{js,md}",
-    "format-verify": "prettier --check 'src/**/*.{js,md}' *.{js,md}",
-    "lint": "eslint src",
+    "lint-fix": "xo --fix && prettier --write . '!**/*.js'",
+    "lint": "xo && prettier --check . '!**/*.js'",
     "test": "ava test/*.js",
-    "prepublishOnly": "npm run lint && npm run test"
+    "prepack": "npm run lint && npm run test"
   },
   "keywords": [
     "github",
@@ -40,13 +39,37 @@
   "homepage": "https://github.com/denis-sokolov/remove-github-forks",
   "devDependencies": {
     "ava": "^3.12.1",
-    "eslint": "^7.9.0",
-    "prettier": "^1.19.1"
+    "prettier": "^2.1.2",
+    "xo": "^0.33.1"
   },
   "ava": {
     "files": [
       "test/**/*",
       "!test/lib"
     ]
+  },
+  "xo": {
+    "extends": [
+      "plugin:promise/recommended"
+    ],
+    "prettier": true,
+    "rules": {
+      "camelcase": "off",
+      "ava/no-import-test-files": "off",
+      "ava/no-invalid-end": "off",
+      "ava/no-skip-test": "off",
+      "ava/no-statement-after-end": "off",
+      "eqeqeq": "off",
+      "no-useless-call": "off",
+      "no-var": "off",
+      "prefer-rest-params": "off",
+      "prefer-spread": "off",
+      "promise/always-return": "off",
+      "promise/catch-or-return": "off",
+      "promise/no-callback-in-promise": "off",
+      "promise/prefer-await-to-then": "off",
+      "unicorn/explicit-length-check": "off",
+      "unicorn/prevent-abbreviations": "off"
+    }
   }
 }
