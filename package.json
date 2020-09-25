@@ -9,7 +9,6 @@
     "format-verify": "prettier --check 'src/**/*.{js,md}' *.{js,md}",
     "lint": "eslint src",
     "test": "ava test/*.js",
-    "ci": "npm run lint && npm run format-verify && npm run test",
     "prepublishOnly": "npm run ci"
   },
   "keywords": [
