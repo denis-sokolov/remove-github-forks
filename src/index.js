@@ -28,7 +28,7 @@ api.get = function(token, opts, getCb) {
 
   // Get all repositories
   github.repos
-    .list({ per_page: 100, type: "public" })
+    .list({ type: "public" })
     .then(function(repos) {
       // Keep only forks
       var forks = repos.filter(function(repo) {

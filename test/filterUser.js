@@ -10,7 +10,7 @@ test.cb('should not delete a fork if user option given', function(t){
 
     removeGithubForks(mock.present, { user: 'john-snow' }, function(){
         lib.check(t, mock.calls(), [
-          [ 'list', { per_page: 100, type: 'public' } ]
+          [ 'listForAuthenticatedUser', { type: 'public' } ]
         ])
         t.end()
     })

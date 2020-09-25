@@ -32,7 +32,7 @@ var branchIsUseful = function(github, repo, branch, parentBranches, cb) {
           if (err) {
             // If diff can't be found, means our commit is not on this
             // parent branch candidate
-            if (err.code === 404) {
+            if (err.status === 404) {
               return someCb(null, false);
             }
             return someCb(err);
