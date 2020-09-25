@@ -41,6 +41,7 @@ alias clean-github='remove-github-forks YOUR-TOKEN'
 
 #### Options
 
+- `--debug` will output extended details in case of errors.
 - `--user <userOrOrganization>` will only clean repositories for the user or organization provided, without touching repositories for organizations you are in.
 - `-y`, `--yes` will not ask for confirmation before deleting repositories. Useful for cron jobs!
 
