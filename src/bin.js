@@ -12,6 +12,7 @@ var meta = require("../package.json");
 program
   .version(meta.version)
   .usage("token")
+  .option("--debug", "Output extended error details")
   .option("--user <value>", "Only cleanup given user or organization")
   .option("-y, --yes", "Do not ask for confirmation")
   .parse(process.argv);
@@ -30,7 +31,7 @@ if (program.args.length !== 1) program.help();
 var token = program.args[0];
 
 var abort = function(err) {
-  console.error(err.message || err);
+  console.error(program.debug ? err : err.message || err);
   process.exit(1);
 };
 
@@ -52,39 +53,42 @@ var assureConfirmation = function(repos, cb) {
     }
   );
 };
-
-clean.get(
-  token,
-  {
-    progress: function(info) {
-      singleLineLog(
-        "Inspected " +
-          info.countInspected +
-          "/" +
-          info.totalToInspect +
-          (info.lastInspected ? " (" + info.lastInspected + ")" : "") +
-          "\n"
-      );
+try {
+  clean.get(
+    token,
+    {
+      progress: function(info) {
+        singleLineLog(
+          "Inspected " +
+            info.countInspected +
+            "/" +
+            info.totalToInspect +
+            (info.lastInspected ? " (" + info.lastInspected + ")" : "") +
+            "\n"
+        );
+      },
+      user: program.user,
+      warnings: function(msg, err) {
+        console.error(msg, err);
+      }
     },
-    user: program.user,
-    warnings: function(msg, err) {
-      console.error(msg, err);
-    }
-  },
-  function(err, repos) {
-    if (err) return abort(err);
+    function(err, repos) {
+      if (err) return abort(err);
 
-    if (!repos.length) {
-      console.log("No useless repositories found.");
-      process.exit(0);
-    }
-
-    assureConfirmation(repos, function() {
-      clean.remove(token, repos, function(errDeleting) {
-        if (errDeleting) return abort(errDeleting);
-        console.log("Done!");
+      if (!repos.length) {
+        console.log("No useless repositories found.");
         process.exit(0);
+      }
+
+      assureConfirmation(repos, function() {
+        clean.remove(token, repos, function(errDeleting) {
+          if (errDeleting) return abort(errDeleting);
+          console.log("Done!");
+          process.exit(0);
+        });
       });
-    });
-  }
-);
+    }
+  );
+} catch (error) {
+  abort(error);
+}
