@@ -78,7 +78,7 @@ exports.mock = (responses) => {
 		const methodsWithoutDataField = ['listForAuthenticatedUser'];
 		const data =
 			typeof responsePassed === 'function'
-				? responsePassed.call(null, callData)
+				? responsePassed(callData)
 				: responsePassed;
 		const response = methodsWithoutDataField.includes(name) ? data : {data};
 		return new Promise((resolve) => {

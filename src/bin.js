@@ -77,7 +77,7 @@ try {
 				return abort(error);
 			}
 
-			if (!repos.length) {
+			if (repos.length === 0) {
 				console.log('No useless repositories found.');
 				process.exit(0);
 			}

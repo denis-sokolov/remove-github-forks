@@ -17,14 +17,13 @@ test.cb('should report progress', (t) => {
 				if (progressCallCount === 0) {
 					t.is(info.countInspected, 0);
 					t.is(info.totalToInspect, 1);
+					progressCallCount += 1;
 				} else {
 					t.is(info.countInspected, 1);
 					t.is(info.totalToInspect, 1);
 					t.is(info.lastInspected, 'fork1');
 					t.end();
 				}
-
-				progressCallCount += 1;
 			}
 		},
 		(error) => {
