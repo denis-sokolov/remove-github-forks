@@ -1,6 +1,6 @@
 const test = require('ava');
 const removeGithubForks = require('..');
-const lib = require('./lib');
+const lib = require('./helpers');
 
 test.cb('should report progress', (t) => {
 	const mock = lib.mock({

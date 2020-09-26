@@ -7,7 +7,7 @@
   "scripts": {
     "lint-fix": "xo --fix && prettier --write . '!**/*.js'",
     "lint": "xo && prettier --check . '!**/*.js'",
-    "test": "ava test/*.js",
+    "test": "ava",
     "prepack": "npm run lint && npm run test"
   },
   "keywords": [
@@ -40,12 +40,6 @@
     "ava": "^3.12.1",
     "prettier": "^2.1.2",
     "xo": "^0.33.1"
-  },
-  "ava": {
-    "files": [
-      "test/**/*",
-      "!test/lib"
-    ]
   },
   "xo": {
     "extends": [

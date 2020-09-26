@@ -1,6 +1,6 @@
 const test = require('ava');
 const removeGithubForks = require('..');
-const lib = require('./lib');
+const lib = require('./helpers');
 
 test.cb('should delete a fork with no branches', (t) => {
 	const mock = lib.mock({
