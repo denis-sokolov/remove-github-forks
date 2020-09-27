@@ -8,7 +8,8 @@ test.cb('should not delete a fork if user option given', (t) => {
 		delete: true
 	});
 
-	removeGithubForks(mock.present, {user: 'john-snow'}, () => {
+	removeGithubForks(mock.present, {user: 'john-snow'}, (error) => {
+		if (error) return t.fail(error);
 		lib.check(t, mock.calls(), [
 			['listForAuthenticatedUser', {type: 'public'}]
 		]);

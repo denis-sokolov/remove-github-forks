@@ -27,6 +27,8 @@ test.cb('should report progress', (t) => {
 				progressCallCount += 1;
 			}
 		},
-		() => {}
+		(error) => {
+			if (error) return t.fail(error);
+		}
 	);
 });

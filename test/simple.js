@@ -8,7 +8,8 @@ test.cb('should delete a fork with no branches', (t) => {
 		delete: true
 	});
 
-	removeGithubForks(mock.present, () => {
+	removeGithubForks(mock.present, (error) => {
+		if (error) return t.fail(error);
 		lib.check(t, mock.calls(), [
 			['listForAuthenticatedUser', {type: 'public'}],
 			['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -34,7 +35,8 @@ if (String.prototype.repeat) {
 				})
 		});
 
-		removeGithubForks(mock.present, () => {
+		removeGithubForks(mock.present, (error) => {
+			if (error) return t.fail(error);
 			lib.check(t, mock.calls(), [
 				['listForAuthenticatedUser', {type: 'public'}],
 				['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -56,7 +58,8 @@ test.cb('should not delete a fork that has more branches', (t) => {
 		}
 	});
 
-	removeGithubForks(mock.present, () => {
+	removeGithubForks(mock.present, (error) => {
+		if (error) return t.fail(error);
 		lib.check(t, mock.calls(), [
 			['listForAuthenticatedUser', {type: 'public'}],
 			['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -90,7 +93,8 @@ test.skip('should delete a fork that has more branches, but all at upstream bran
 		delete: true
 	});
 
-	removeGithubForks(mock.present, () => {
+	removeGithubForks(mock.present, (error) => {
+		if (error) return t.fail(error);
 		lib.check(t, mock.calls(), [
 			['listForAuthenticatedUser', {type: 'public'}],
 			['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -125,7 +129,8 @@ test.cb(
 			delete: true
 		});
 
-		removeGithubForks(mock.present, () => {
+		removeGithubForks(mock.present, (error) => {
+			if (error) return t.fail(error);
 			lib.check(t, mock.calls(), [
 				['listForAuthenticatedUser', {type: 'public'}],
 				['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -160,7 +165,8 @@ test.cb('should delete a fork that has branches behind', (t) => {
 		delete: true
 	});
 
-	removeGithubForks(mock.present, () => {
+	removeGithubForks(mock.present, (error) => {
+		if (error) return t.fail(error);
 		lib.check(t, mock.calls(), [
 			['listForAuthenticatedUser', {type: 'public'}],
 			['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -219,7 +225,8 @@ test.cb(
 			delete: true
 		});
 
-		removeGithubForks(mock.present, () => {
+		removeGithubForks(mock.present, (error) => {
+			if (error) return t.fail(error);
 			lib.check(t, mock.calls(), [
 				['listForAuthenticatedUser', {type: 'public'}],
 				['get', {owner: lib.USER.login, repo: 'fork1'}],
