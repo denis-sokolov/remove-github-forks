@@ -1,5 +1,3 @@
-⚠️ Tool unmaintained. GitHub now suggests to delete the fork after deleting a PR branch. Hopefully this software is now less necessary.
-
 # Clean your useless GitHub forks
 
 [![npm](https://img.shields.io/npm/v/remove-github-forks.svg)](https://www.npmjs.com/package/remove-github-forks)
@@ -7,6 +5,8 @@
 [![Build Status](https://travis-ci.org/denis-sokolov/remove-github-forks.svg?branch=master)](https://travis-ci.org/denis-sokolov/remove-github-forks)
 
 If you contribute to many projects on GitHub, your profile is full of temporary forks that are only useful while the pull request is open. After that there is no reason to keep the fork. This tool will delete all such forks. And if there’s any commits in the fork that have not yet been merged upstream, the fork will be kept, of course. For the extra peace of mind, the tool will ask you to confirm the forks it plans to delete.
+
+GitHub now suggests to delete the fork after deleting a PR branch, so this software is now less necessary. Still, depending on your workflow, you may benefit from mass-pruning of forks.
 
 ## Usage
 
