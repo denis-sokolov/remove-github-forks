@@ -32,7 +32,7 @@ if (program.args.length !== 1) {
 
 const token = program.args[0];
 
-const abort = (error) => {
+const abort = error => {
 	console.error(program.debug ? error : error.message || error);
 	process.exit(1);
 };
@@ -44,9 +44,9 @@ const assureConfirmation = (repos, callback) => {
 
 	confirm(
 		'Delete these forks: \n' +
-			repos.map((repo) => '    ' + repo.url).join('\n') +
+			repos.map(repo => '    ' + repo.url).join('\n') +
 			'\n',
-		(confirmed) => {
+		confirmed => {
 			if (!confirmed) {
 				return abort('Aborting.');
 			}
@@ -83,7 +83,7 @@ try {
 			}
 
 			assureConfirmation(repos, () => {
-				clean.remove(token, repos, (errorDeleting) => {
+				clean.remove(token, repos, errorDeleting => {
 					if (errorDeleting) {
 						return abort(errorDeleting);
 					}

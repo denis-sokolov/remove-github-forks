@@ -2,7 +2,7 @@ const {Octokit} = require('@octokit/rest');
 const {throttling} = require('@octokit/plugin-throttling');
 const ThrottledOctokit = Octokit.plugin(throttling);
 
-module.exports = (token) => {
+module.exports = token => {
 	// Allow to inject a GitHub API instead of a token
 	if (token.repos) {
 		return token;

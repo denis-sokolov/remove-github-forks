@@ -2,7 +2,7 @@ const test = require('ava');
 const removeGithubForks = require('..');
 const lib = require('./helpers');
 
-test.cb('should report progress', (t) => {
+test.cb('should report progress', t => {
 	const mock = lib.mock({
 		listBranches: [],
 		delete: true
@@ -26,8 +26,10 @@ test.cb('should report progress', (t) => {
 				}
 			}
 		},
-		(error) => {
-			if (error) return t.fail(error);
+		error => {
+			if (error) {
+				return t.fail(error);
+			}
 		}
 	);
 });

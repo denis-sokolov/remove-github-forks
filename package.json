@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "bin": "src/bin.js",
   "scripts": {
-    "lint-fix": "xo --fix && prettier --write . '!**/*.js'",
-    "lint": "xo && prettier --check . '!**/*.js'",
+    "lint-fix": "xo --fix && prettier --write .",
+    "lint": "xo && prettier --check .",
     "test": "ava",
     "prepack": "npm run lint && npm run test"
   },
@@ -45,7 +45,6 @@
     "extends": [
       "plugin:promise/recommended"
     ],
-    "prettier": true,
     "rules": {
       "ava/no-import-test-files": "off",
       "ava/no-todo-test": "off",
