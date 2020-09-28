@@ -6,7 +6,7 @@ exports.COMMIT_C = {sha: 'abcdef3'};
 
 // No reason to believe JSON.stringify will order map properties in the same order
 // This should be replaced with a custom function
-const hash = (r) => JSON.stringify(r);
+const hash = r => JSON.stringify(r);
 
 const sortingFunction = (a, b) => hash(a).localeCompare(hash(b));
 
@@ -47,7 +47,7 @@ exports.check = (t, actual, expected) => {
 
 		const currentRequestIsExpectedButNotNow = expected
 			.slice(i + 1)
-			.some((attempt) => hash(actualRequest) === hash(attempt));
+			.some(attempt => hash(actualRequest) === hash(attempt));
 		if (currentRequestIsExpectedButNotNow) {
 			return fail(t, 'Missing request ' + JSON.stringify(expected[i]));
 		}
@@ -60,7 +60,7 @@ exports.check = (t, actual, expected) => {
 	}
 };
 
-exports.mock = (responses) => {
+exports.mock = responses => {
 	responses.listForAuthenticatedUser = responses.listForAuthenticatedUser || [
 		{name: 'non-fork', fork: false},
 		{name: 'fork1', fork: true, owner: exports.USER}
@@ -77,11 +77,11 @@ exports.mock = (responses) => {
 		calls.push([name, callData]);
 		const methodsWithoutDataField = ['listForAuthenticatedUser'];
 		const data =
-			typeof responsePassed === 'function'
-				? responsePassed(callData)
-				: responsePassed;
+			typeof responsePassed === 'function' ?
+				responsePassed(callData) :
+				responsePassed;
 		const response = methodsWithoutDataField.includes(name) ? data : {data};
-		return new Promise((resolve) => {
+		return new Promise(resolve => {
 			setTimeout(() => {
 				resolve(response);
 				if (callback) {
@@ -91,7 +91,7 @@ exports.mock = (responses) => {
 		});
 	};
 
-	const buildRejecter = (name) => () => {
+	const buildRejecter = name => () => {
 		throw new Error(`did not expect to have ${name} called`);
 	};
 
@@ -102,7 +102,7 @@ exports.mock = (responses) => {
 		listForAuthenticatedUser: buildRejecter('listForAuthenticatedUser'),
 		listBranches: buildRejecter('listBranches')
 	};
-	Object.keys(responses).forEach((name) => {
+	Object.keys(responses).forEach(name => {
 		repos[name] = buildResponder(name, responses[name]);
 	});
 

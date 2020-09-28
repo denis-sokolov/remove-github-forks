@@ -2,7 +2,7 @@
 
 const branchIsUseful = async (github, repo, branch, parentBranches) => {
 	const someParentBranchAtThisSha =
-		parentBranches.filter((candidate) => {
+		parentBranches.filter(candidate => {
 			return branch.commit.sha === candidate.commit.sha;
 		}).length === 1;
 
@@ -13,7 +13,7 @@ const branchIsUseful = async (github, repo, branch, parentBranches) => {
 	// Check if at least one parent branch contains this commit
 	// Looping through all parent branches is immensely slow,
 	// let's take a safe shortcut
-	const branchesToCheck = parentBranches.filter((b) => {
+	const branchesToCheck = parentBranches.filter(b => {
 		return [branch.name, 'master'].includes(b.name);
 	});
 	for (const candidate of branchesToCheck) {

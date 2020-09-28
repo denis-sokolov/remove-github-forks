@@ -41,7 +41,7 @@ const _apiGet = async (token, options = {}) => {
 		countInspected: 0,
 		totalToInspect: forks.length
 	});
-	const forkDone = (fork) => {
+	const forkDone = fork => {
 		countDoneForks += 1;
 		options.progress({
 			countInspected: countDoneForks,
@@ -51,7 +51,7 @@ const _apiGet = async (token, options = {}) => {
 	};
 
 	// Keep only useless forks
-	const processedForks = forks.map(async (fork) => {
+	const processedForks = forks.map(async fork => {
 		try {
 			if (await shouldDeleteFork(github, fork)) {
 				// Map to our simple objects
@@ -75,7 +75,7 @@ const _apiGet = async (token, options = {}) => {
 const _apiRemove = async (token, repos) => {
 	const github = githubFactory(token);
 	await Promise.all(
-		repos.map((repo) =>
+		repos.map(repo =>
 			github.repos.delete({owner: repo.owner, repo: repo.repo})
 		)
 	);
@@ -83,7 +83,7 @@ const _apiRemove = async (token, repos) => {
 
 /* eslint-disable promise/catch-or-return, promise/prefer-await-to-then, promise/always-return, promise/no-callback-in-promise */
 api.remove = (token, repos, callback) => {
-	_apiRemove(token, repos).then((result) => {
+	_apiRemove(token, repos).then(result => {
 		callback(null, result);
 	}, callback);
 };
@@ -94,7 +94,7 @@ api.get = (token, options, callback) => {
 		options = {};
 	}
 
-	_apiGet(token, options).then((result) => {
+	_apiGet(token, options).then(result => {
 		callback(null, result);
 	}, callback);
 };

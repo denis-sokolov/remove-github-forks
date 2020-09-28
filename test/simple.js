@@ -2,14 +2,17 @@ const test = require('ava');
 const removeGithubForks = require('..');
 const lib = require('./helpers');
 
-test.cb('should delete a fork with no branches', (t) => {
+test.cb('should delete a fork with no branches', t => {
 	const mock = lib.mock({
 		listBranches: [],
 		delete: true
 	});
 
-	removeGithubForks(mock.present, (error) => {
-		if (error) return t.fail(error);
+	removeGithubForks(mock.present, error => {
+		if (error) {
+			return t.fail(error);
+		}
+
 		lib.check(t, mock.calls(), [
 			['listForAuthenticatedUser', {type: 'public'}],
 			['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -25,7 +28,7 @@ test.cb('should delete a fork with no branches', (t) => {
 });
 
 if (String.prototype.repeat) {
-	test.cb('should not delete a fork that has over 99 branches', (t) => {
+	test.cb('should not delete a fork that has over 99 branches', t => {
 		const mock = lib.mock({
 			listBranches: 'a'
 				.repeat(99)
@@ -35,8 +38,11 @@ if (String.prototype.repeat) {
 				})
 		});
 
-		removeGithubForks(mock.present, (error) => {
-			if (error) return t.fail(error);
+		removeGithubForks(mock.present, error => {
+			if (error) {
+				return t.fail(error);
+			}
+
 			lib.check(t, mock.calls(), [
 				['listForAuthenticatedUser', {type: 'public'}],
 				['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -47,7 +53,7 @@ if (String.prototype.repeat) {
 	});
 }
 
-test.cb('should not delete a fork that has more branches', (t) => {
+test.cb('should not delete a fork that has more branches', t => {
 	const mock = lib.mock({
 		listBranches(arguments_) {
 			if (arguments_.owner === lib.USER.login) {
@@ -58,8 +64,11 @@ test.cb('should not delete a fork that has more branches', (t) => {
 		}
 	});
 
-	removeGithubForks(mock.present, (error) => {
-		if (error) return t.fail(error);
+	removeGithubForks(mock.present, error => {
+		if (error) {
+			return t.fail(error);
+		}
+
 		lib.check(t, mock.calls(), [
 			['listForAuthenticatedUser', {type: 'public'}],
 			['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -75,7 +84,7 @@ test.cb('should not delete a fork that has more branches', (t) => {
 
 test.cb(
 	'should delete a fork that has more branches, but all at upstream branch tips',
-	(t) => {
+	t => {
 		const mock = lib.mock({
 			listBranches(arguments_) {
 				if (arguments_.user === lib.USER.login) {
@@ -94,8 +103,11 @@ test.cb(
 			delete: true
 		});
 
-		removeGithubForks(mock.present, (error) => {
-			if (error) return t.fail(error);
+		removeGithubForks(mock.present, error => {
+			if (error) {
+				return t.fail(error);
+			}
+
 			lib.check(t, mock.calls(), [
 				['listForAuthenticatedUser', {type: 'public'}],
 				['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -113,7 +125,7 @@ test.cb(
 
 test.cb(
 	'should delete a fork that has all branches at upstream branch tips',
-	(t) => {
+	t => {
 		const mock = lib.mock({
 			listBranches(arguments_) {
 				if (arguments_.user === lib.USER.login) {
@@ -131,8 +143,11 @@ test.cb(
 			delete: true
 		});
 
-		removeGithubForks(mock.present, (error) => {
-			if (error) return t.fail(error);
+		removeGithubForks(mock.present, error => {
+			if (error) {
+				return t.fail(error);
+			}
+
 			lib.check(t, mock.calls(), [
 				['listForAuthenticatedUser', {type: 'public'}],
 				['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -148,7 +163,7 @@ test.cb(
 	}
 );
 
-test.cb('should delete a fork that has branches behind', (t) => {
+test.cb('should delete a fork that has branches behind', t => {
 	const mock = lib.mock({
 		listBranches(arguments_) {
 			if (arguments_.owner === lib.USER.login) {
@@ -167,8 +182,11 @@ test.cb('should delete a fork that has branches behind', (t) => {
 		delete: true
 	});
 
-	removeGithubForks(mock.present, (error) => {
-		if (error) return t.fail(error);
+	removeGithubForks(mock.present, error => {
+		if (error) {
+			return t.fail(error);
+		}
+
 		lib.check(t, mock.calls(), [
 			['listForAuthenticatedUser', {type: 'public'}],
 			['get', {owner: lib.USER.login, repo: 'fork1'}],
@@ -212,7 +230,7 @@ test.cb('should delete a fork that has branches behind', (t) => {
 
 test.cb(
 	'should not delete a fork that has diff that is too long to generate',
-	(t) => {
+	t => {
 		const mock = lib.mock({
 			listBranches(arguments_) {
 				if (arguments_.owner === lib.USER.login) {
@@ -227,8 +245,11 @@ test.cb(
 			delete: true
 		});
 
-		removeGithubForks(mock.present, (error) => {
-			if (error) return t.fail(error);
+		removeGithubForks(mock.present, error => {
+			if (error) {
+				return t.fail(error);
+			}
+
 			lib.check(t, mock.calls(), [
 				['listForAuthenticatedUser', {type: 'public'}],
 				['get', {owner: lib.USER.login, repo: 'fork1'}],
