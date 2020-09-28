@@ -1,3 +1,9 @@
+# 2.1
+
+- Considerable performance improvement
+- Require Node.js 10
+- --debug option
+
 # 2.0.1
 
 - Fix error when encountering deleted parent, #71, #72.
