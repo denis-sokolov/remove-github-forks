@@ -96,3 +96,7 @@ clean.remove(token, repos, function(err){});
 I am not aware of many alternatives to this tool.
 
 One is [github-clean-forks by caub](https://caub.github.io/github-clean-forks).
+
+## Credits
+
+Thanks for everyone who has contributed, and in particular @fregante for reinvigorating a paused project.
