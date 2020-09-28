@@ -18,7 +18,6 @@ const branchIsUseful = async (github, repo, branch, parentBranches) => {
 	});
 	for (const candidate of branchesToCheck) {
 		try {
-			// eslint-disable-next-line no-await-in-loop
 			const {data: diff} = await github.repos.compareCommits({
 				owner: repo.parent.owner.login,
 				repo: repo.parent.name,
@@ -88,7 +87,6 @@ module.exports = async (github, fork) => {
 	}
 
 	for (const branch of branches) {
-		// eslint-disable-next-line no-await-in-loop
 		const useful = await branchIsUseful(github, repo, branch, parentbranches);
 		if (useful) {
 			return false;

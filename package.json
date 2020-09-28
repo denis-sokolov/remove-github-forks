@@ -48,7 +48,8 @@
     "rules": {
       "ava/no-import-test-files": "off",
       "ava/no-todo-test": "off",
-      "camelcase": "off"
+      "camelcase": "off",
+      "no-await-in-loop": "off"
     }
   }
 }
