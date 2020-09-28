@@ -48,6 +48,7 @@
     "prettier": true,
     "rules": {
       "ava/no-import-test-files": "off",
+      "ava/no-todo-test": "off",
       "camelcase": "off"
     }
   }
