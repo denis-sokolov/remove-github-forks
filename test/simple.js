@@ -73,41 +73,43 @@ test.cb('should not delete a fork that has more branches', (t) => {
 	});
 });
 
-// Currently our logic does not delete this fork
-test.skip('should delete a fork that has more branches, but all at upstream branch tips', (t) => {
-	const mock = lib.mock({
-		listBranches(arguments_) {
-			if (arguments_.user === lib.USER.login) {
+test.cb(
+	'should delete a fork that has more branches, but all at upstream branch tips',
+	(t) => {
+		const mock = lib.mock({
+			listBranches(arguments_) {
+				if (arguments_.user === lib.USER.login) {
+					return [
+						{name: 'master', commit: lib.COMMIT_A},
+						{name: 'foo', commit: lib.COMMIT_A},
+						{name: 'bar', commit: lib.COMMIT_B}
+					];
+				}
+
 				return [
 					{name: 'master', commit: lib.COMMIT_A},
-					{name: 'foo', commit: lib.COMMIT_A},
-					{name: 'bar', commit: lib.COMMIT_B}
+					{name: 'baz', commit: lib.COMMIT_B}
 				];
-			}
+			},
+			delete: true
+		});
 
-			return [
-				{name: 'master', commit: lib.COMMIT_A},
-				{name: 'baz', commit: lib.COMMIT_B}
-			];
-		},
-		delete: true
-	});
-
-	removeGithubForks(mock.present, (error) => {
-		if (error) return t.fail(error);
-		lib.check(t, mock.calls(), [
-			['listForAuthenticatedUser', {type: 'public'}],
-			['get', {owner: lib.USER.login, repo: 'fork1'}],
-			['listBranches', {owner: lib.USER.login, repo: 'fork1', per_page: 100}],
-			[
-				'listBranches',
-				{owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100}
-			],
-			['delete', {owner: lib.USER.login, repo: 'fork1', url: undefined}]
-		]);
-		t.end();
-	});
-});
+		removeGithubForks(mock.present, (error) => {
+			if (error) return t.fail(error);
+			lib.check(t, mock.calls(), [
+				['listForAuthenticatedUser', {type: 'public'}],
+				['get', {owner: lib.USER.login, repo: 'fork1'}],
+				['listBranches', {owner: lib.USER.login, repo: 'fork1', per_page: 100}],
+				[
+					'listBranches',
+					{owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100}
+				],
+				['delete', {owner: lib.USER.login, repo: 'fork1', url: undefined}]
+			]);
+			t.end();
+		});
+	}
+);
 
 test.cb(
 	'should delete a fork that has all branches at upstream branch tips',
