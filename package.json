@@ -47,18 +47,9 @@
     ],
     "prettier": true,
     "rules": {
-      "camelcase": "off",
       "ava/no-import-test-files": "off",
-      "ava/no-invalid-end": "off",
-      "ava/no-skip-test": "off",
-      "ava/no-statement-after-end": "off",
-      "eqeqeq": "off",
-      "no-useless-call": "off",
-      "no-var": "off",
-      "prefer-rest-params": "off",
-      "prefer-spread": "off",
-      "unicorn/explicit-length-check": "off",
-      "unicorn/prevent-abbreviations": "off"
+      "ava/no-todo-test": "off",
+      "camelcase": "off"
     }
   }
 }
