@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/remove-github-forks.svg)](https://www.npmjs.com/package/remove-github-forks)
 [![npm](https://img.shields.io/npm/dt/remove-github-forks.svg)](https://www.npmjs.com/package/remove-github-forks)
-[![Build Status](https://travis-ci.org/denis-sokolov/remove-github-forks.svg?branch=master)](https://travis-ci.org/denis-sokolov/remove-github-forks)
+[![Build Status](https://github.com/denis-sokolov/remove-github-forks/actions)](https://github.com/denis-sokolov/remove-github-forks/workflows/CI/badge.svg?branch=master&event=push)
 
 If you contribute to many projects on GitHub, your profile is full of temporary forks that are only useful while the pull request is open. After that there is no reason to keep the fork. This tool will delete all such forks. And if there’s any commits in the fork that have not yet been merged upstream, the fork will be kept, of course. For the extra peace of mind, the tool will ask you to confirm the forks it plans to delete.
 
