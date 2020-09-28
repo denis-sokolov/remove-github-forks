@@ -14,10 +14,10 @@ test.cb('should report progress', (t) => {
 		mock.present,
 		{
 			progress(info) {
-				if (progressCallCount === 0) {
+				progressCallCount += 1;
+				if (progressCallCount === 1) {
 					t.is(info.countInspected, 0);
 					t.is(info.totalToInspect, 1);
-					progressCallCount += 1;
 				} else {
 					t.is(info.countInspected, 1);
 					t.is(info.totalToInspect, 1);
