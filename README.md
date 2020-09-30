@@ -99,4 +99,4 @@ One is [github-clean-forks by caub](https://caub.github.io/github-clean-forks).
 
 ## Credits
 
-Thanks for everyone who has contributed, and in particular @fregante for reinvigorating a paused project.
+Thanks for everyone who has contributed, and in particular [@fregante](https://github.com/fregante) for reinvigorating a paused project.
