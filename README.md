@@ -19,6 +19,8 @@ To allow the library access to a GitHub account, one needs an OAuth token.
 $ [sudo] npm install --global remove-github-forks
 ```
 
+(Or run [with Docker](https://hub.docker.com/r/arska/remove-github-forks))
+
 ### Run
 
 ```
