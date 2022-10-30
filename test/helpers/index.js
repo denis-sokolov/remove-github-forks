@@ -68,7 +68,8 @@ exports.mock = responses => {
 	responses.get = responses.get || {
 		name: 'fork1',
 		owner: exports.USER,
-		parent: {name: 'upstream-lib', owner: exports.AUTHOR}
+		parent: {name: 'upstream-lib', owner: exports.AUTHOR},
+		default_branch: 'master'
 	};
 
 	const calls = [];

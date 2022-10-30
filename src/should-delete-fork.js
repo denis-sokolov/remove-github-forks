@@ -14,7 +14,7 @@ const branchIsUseful = async (github, repo, branch, parentBranches) => {
 	// Looping through all parent branches is immensely slow,
 	// let's take a safe shortcut
 	const branchesToCheck = parentBranches.filter(b => {
-		return [branch.name, 'master'].includes(b.name);
+		return [branch.name, repo.default_branch].includes(b.name);
 	});
 	for (const candidate of branchesToCheck) {
 		try {
