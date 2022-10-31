@@ -82,6 +82,49 @@ test.cb('should not delete a fork that has more branches', t => {
 	});
 });
 
+test.cb('should correctly check against the default branch', t => {
+	const mock = lib.mock({
+		get: {
+			default_branch: 'main',
+			name: 'fork1',
+			owner: lib.USER,
+			parent: {name: 'upstream-lib', owner: lib.AUTHOR}
+		},
+		listBranches(arguments_) {
+			if (arguments_.user === lib.USER.login) {
+				return [
+					{name: 'bar', commit: lib.COMMIT_A}
+				];
+			}
+
+			return [
+				{name: 'main', commit: lib.COMMIT_A},
+				{name: 'master', commit: lib.COMMIT_C},
+				{name: 'baz', commit: lib.COMMIT_B}
+			];
+		},
+		delete: true
+	});
+
+	removeGithubForks(mock.present, error => {
+		if (error) {
+			return t.fail(error);
+		}
+
+		lib.check(t, mock.calls(), [
+			['listForAuthenticatedUser', {type: 'public'}],
+			['get', {owner: lib.USER.login, repo: 'fork1'}],
+			['listBranches', {owner: lib.USER.login, repo: 'fork1', per_page: 100}],
+			[
+				'listBranches',
+				{owner: lib.AUTHOR.login, repo: 'upstream-lib', per_page: 100}
+			],
+			['delete', {owner: lib.USER.login, repo: 'fork1', url: undefined}]
+		]);
+		t.end();
+	});
+});
+
 test.cb(
 	'should delete a fork that has more branches, but all at upstream branch tips',
 	t => {

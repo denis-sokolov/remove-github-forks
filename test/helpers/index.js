@@ -66,6 +66,7 @@ exports.mock = responses => {
 		{name: 'fork1', fork: true, owner: exports.USER}
 	];
 	responses.get = responses.get || {
+		default_branch: 'master',
 		name: 'fork1',
 		owner: exports.USER,
 		parent: {name: 'upstream-lib', owner: exports.AUTHOR}
