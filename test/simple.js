@@ -82,7 +82,7 @@ test.cb('should not delete a fork that has more branches', t => {
 	});
 });
 
-test.cb.only('should correctly check against the default branch', t => {
+test.cb('should correctly check against the default branch', t => {
 	const mock = lib.mock({
 		get: {
 			default_branch: 'main',
