@@ -85,10 +85,10 @@ test.cb('should not delete a fork that has more branches', t => {
 test.cb.only('should correctly check against the default branch', t => {
 	const mock = lib.mock({
 		get: {
+			default_branch: 'main',
 			name: 'fork1',
 			owner: lib.USER,
-			parent: {name: 'upstream-lib', owner: lib.AUTHOR},
-			default_branch: 'main',
+			parent: {name: 'upstream-lib', owner: lib.AUTHOR}
 		},
 		listBranches(arguments_) {
 			if (arguments_.user === lib.USER.login) {
